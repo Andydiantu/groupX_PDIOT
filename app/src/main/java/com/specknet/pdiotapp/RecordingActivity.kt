@@ -220,6 +220,7 @@ class RecordingActivity : AppCompatActivity() {
 
 
             respeckOutputData.append(output)
+            getActivity(liveData)
             Log.d(TAG, "updateRespeckData: appended to respeckoutputdata = " + output)
 
         }
