@@ -1,13 +1,7 @@
 package com.specknet.pdiotapp.live
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
+import android.content.*
+import android.os.*
 import android.util.Log
 import android.util.TypedValue
 import android.widget.TextView
@@ -19,16 +13,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.specknet.pdiotapp.R
-import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.io.IOException
-import java.nio.ByteBuffer
 
 
 class LiveDataActivity : AppCompatActivity() {
+    private val TAG = this.javaClass.name
 
     // global graph variables
     lateinit var dataSet_res_accel_x: LineDataSet
@@ -58,18 +49,36 @@ class LiveDataActivity : AppCompatActivity() {
     val filterTestRespeck = IntentFilter(Constants.ACTION_RESPECK_LIVE_BROADCAST)
     val filterTestThingy = IntentFilter(Constants.ACTION_THINGY_BROADCAST)
 
+    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
+    private var mIsBound = false
+    private val mServiceConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            Log.d(TAG, "onServiceConnected: LiveDataActivity")
+            myService = service as ActivityIdentifyService.ActivityIdentifyBinder
+            mIsBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            Log.d(TAG, "onServiceDisconnected: onServiceDisconnected")
+            mIsBound = false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live_data)
 
         setupCharts()
 
-
-        var curr_activity_num = 0;
         cur_activity = findViewById(R.id.cur_activity_txt)
         cur_activity.setText("Sitting")
         cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
 
+        startService(Intent(this, ActivityIdentifyService::class.java))
+        this.bindService(
+            Intent(this, ActivityIdentifyService::class.java),
+            mServiceConnection, BIND_AUTO_CREATE
+        )
 
         // set up the broadcast receiver
         respeckLiveUpdateReceiver = object : BroadcastReceiver() {
@@ -267,6 +276,8 @@ class LiveDataActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        unbindService(mServiceConnection)
+        mIsBound = false
         unregisterReceiver(respeckLiveUpdateReceiver)
         unregisterReceiver(thingyLiveUpdateReceiver)
         looperRespeck.quit()

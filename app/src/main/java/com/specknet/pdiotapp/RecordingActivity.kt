@@ -1,17 +1,13 @@
 package com.specknet.pdiotapp
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
+import android.annotation.SuppressLint
+import android.content.*
+import android.os.*
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.specknet.pdiotapp.live.ActivityIdentifyService
 import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.CountUpTimer
@@ -63,6 +59,7 @@ class RecordingActivity : AppCompatActivity() {
     private lateinit var thingyAccel: TextView
     private lateinit var thingyGyro: TextView
     private lateinit var thingyMag: TextView
+    private lateinit var recordingActivityName: TextView
 
     var thingyOn = false
     var respeckOn = false
@@ -83,6 +80,8 @@ class RecordingActivity : AppCompatActivity() {
         setupButtons()
 
         setupInputs()
+
+        recordingActivityName = findViewById(R.id.recording_activity_txt)
 
         Log.d(TAG, "onCreate: setting up respeck receiver")
         // register respeck receiver
@@ -203,7 +202,7 @@ class RecordingActivity : AppCompatActivity() {
 
             val classes = arrayOf("Sitting", "Walking", "Standing", "Sitting", "Walking", "Standing","Sitting", "Walking", "Standing","Sitting", "Walking", "Standing", "Sleeping")
             val className = classes[maxPos]
-
+            recordingActivityName.text = className
 
             // Releases model resources if no longer used.
             model.close()
