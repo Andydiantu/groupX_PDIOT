@@ -12,15 +12,18 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.CountUpTimer
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.*
-import java.lang.Exception
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.*
-import java.lang.StringBuilder
 
 class RecordingActivity : AppCompatActivity() {
     private val TAG = "RecordingActivity"
@@ -160,11 +163,61 @@ class RecordingActivity : AppCompatActivity() {
         thingyMag = findViewById(R.id.thingy_mag)
     }
 
+    private fun getActivity(liveData: RESpeckLiveData){
+        try {
+            val model: Model = Model.newInstance(applicationContext)
+
+
+            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 6)
+            // Creates inputs for reference.
+            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 6), DataType.FLOAT32)
+            byteBuffer.order(ByteOrder.nativeOrder());
+
+            // ADD VALUES
+            for (j in 0 until 50) {
+                byteBuffer.putFloat(liveData.accelX)
+                byteBuffer.putFloat(liveData.accelY)
+                byteBuffer.putFloat(liveData.accelZ)
+                byteBuffer.putFloat(liveData.gyro.x)
+                byteBuffer.putFloat(liveData.gyro.y)
+                byteBuffer.putFloat(liveData.gyro.z)
+            }
+
+            inputFeature0.loadBuffer(byteBuffer)
+
+            // Runs model inference and gets result.
+            val outputs: Model.Outputs = model.process(inputFeature0)
+            val outputFeature0: TensorBuffer = outputs.getOutputFeature0AsTensorBuffer()
+
+            val confidences = outputFeature0.floatArray
+            // find the index of the class with the biggest confidence.
+            // find the index of the class with the biggest confidence.
+            var maxPos = 0
+            var maxConfidence = 0f
+            for (i in confidences.indices) {
+                if (confidences[i] > maxConfidence) {
+                    maxConfidence = confidences[i]
+                    maxPos = i
+                }
+            }
+
+            val classes = arrayOf("Sitting", "Walking", "Standing", "Sitting", "Walking", "Standing","Sitting", "Walking", "Standing","Sitting", "Walking", "Standing", "Sleeping")
+            val className = classes[maxPos]
+
+
+            // Releases model resources if no longer used.
+            model.close()
+        } catch (e: IOException) {
+            // TODO Handle the exception
+        }
+    }
+
     private fun updateRespeckData(liveData: RESpeckLiveData) {
         if (mIsRespeckRecording) {
             val output = liveData.phoneTimestamp.toString() + "," +
                     liveData.accelX + "," + liveData.accelY + "," + liveData.accelZ + "," +
                     liveData.gyro.x + "," + liveData.gyro.y + "," + liveData.gyro.z + "\n"
+
 
             respeckOutputData.append(output)
             Log.d(TAG, "updateRespeckData: appended to respeckoutputdata = " + output)

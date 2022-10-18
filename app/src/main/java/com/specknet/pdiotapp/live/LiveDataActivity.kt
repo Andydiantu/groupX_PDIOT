@@ -1,19 +1,17 @@
 package com.specknet.pdiotapp.live
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
-import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -21,10 +19,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.specknet.pdiotapp.R
+import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
-import kotlin.collections.ArrayList
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.io.IOException
+import java.nio.ByteBuffer
 
 
 class LiveDataActivity : AppCompatActivity() {
@@ -63,6 +64,8 @@ class LiveDataActivity : AppCompatActivity() {
 
         setupCharts()
 
+
+        var curr_activity_num = 0;
         cur_activity = findViewById(R.id.cur_activity_txt)
         cur_activity.setText("Sitting")
         cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
@@ -89,6 +92,7 @@ class LiveDataActivity : AppCompatActivity() {
 
                     time += 1
                     updateGraph("respeck", x, y, z)
+
 
                 }
             }
