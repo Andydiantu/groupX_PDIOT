@@ -24,13 +24,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".resultAnalysis"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <service
             android:name=".bluetooth.BluetoothSpeckService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".live.LiveDataActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.specknet.respeck.RESPECK_LIVE_BROADCAST" />
@@ -53,6 +62,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".bluetooth.ConnectingActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.specknet.pdiotapp.RESPECK_CONNECTED" />
@@ -60,17 +70,22 @@
             <intent-filter>
                 <action android:name="com.specknet.pdiotapp.RESPECK_DISCONNECTED" />
             </intent-filter>
-        </activity>
-
-        <service
-            android:name=".bluetooth.BluetoothService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.specknet.respeckmodeltesting.RESPECK_BROADCAST" />
-            </intent-filter>
-        </service>
-
+        </activity> <!-- <service -->
+        <!-- android:name=".bluetooth.BluetoothService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.specknet.respeckmodeltesting.RESPECK_BROADCAST" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <service -->
+        <!-- android:name=".bluetooth.BluetoothSpeckService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.specknet.respeckmodeltesting.RESPECK_BROADCAST" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <activity
             android:name=".onboarding.OnBoardingActivity"
             android:screenOrientation="portrait" />
@@ -79,6 +94,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

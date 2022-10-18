@@ -1,5 +1,6 @@
 package com.specknet.pdiotapp.live
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,9 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -42,6 +46,8 @@ class LiveDataActivity : AppCompatActivity() {
     lateinit var respeckChart: LineChart
     lateinit var thingyChart: LineChart
 
+    lateinit var cur_activity: TextView
+
     // global broadcast receiver so we can unregister it
     lateinit var respeckLiveUpdateReceiver: BroadcastReceiver
     lateinit var thingyLiveUpdateReceiver: BroadcastReceiver
@@ -56,6 +62,11 @@ class LiveDataActivity : AppCompatActivity() {
         setContentView(R.layout.activity_live_data)
 
         setupCharts()
+
+        cur_activity = findViewById(R.id.cur_activity_txt)
+        cur_activity.setText("Sitting")
+        cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+
 
         // set up the broadcast receiver
         respeckLiveUpdateReceiver = object : BroadcastReceiver() {

@@ -24,7 +24,7 @@
 
         <Button
             android:id="@+id/record_button"
-            android:layout_width="550px"
+            android:layout_width="350px"
             android:layout_height="wrap_content"
             android:layout_marginTop="100px"
             android:background="#03A9F4"
@@ -38,7 +38,7 @@
 
         <Button
             android:id="@+id/live_button"
-            android:layout_width="550px"
+            android:layout_width="350px"
             android:layout_height="wrap_content"
             android:layout_marginTop="100px"
             android:background="#03A9F4"
@@ -52,7 +52,7 @@
 
         <Button
             android:id="@+id/ble_button"
-            android:layout_width="550px"
+            android:layout_width="350px"
             android:layout_height="wrap_content"
             android:text="Connect sensors"
             android:layout_marginTop="100px"
@@ -60,6 +60,21 @@
             android:background="#03A9F4"
             android:textColor="#FFFFFF"
             app:layout_constraintTop_toBottomOf="@+id/live_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/result_button"
+            />
+
+        <Button
+            android:id="@+id/result_button"
+            android:layout_width="350px"
+            android:layout_height="wrap_content"
+            android:text="Result Analysis"
+            android:layout_marginTop="100px"
+            android:layout_marginBottom="150px"
+            android:background="#03A9F4"
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toBottomOf="@+id/ble_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

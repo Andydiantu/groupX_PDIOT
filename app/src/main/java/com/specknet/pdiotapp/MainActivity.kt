@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var liveProcessingButton: Button
     lateinit var pairingButton: Button
     lateinit var recordButton: Button
+    lateinit var resultButton: Button
 
     // permissions
     lateinit var permissionAlertDialog: AlertDialog.Builder
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         liveProcessingButton = findViewById(R.id.live_button)
         pairingButton = findViewById(R.id.ble_button)
         recordButton = findViewById(R.id.record_button)
+        resultButton = findViewById(R.id.result_button)
 
         permissionAlertDialog = AlertDialog.Builder(this)
 
@@ -92,6 +94,11 @@ class MainActivity : AppCompatActivity() {
 
         recordButton.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
+            startActivity(intent)
+        }
+
+        resultButton.setOnClickListener {
+            val intent = Intent(this, resultAnalysis::class.java)
             startActivity(intent)
         }
     }
