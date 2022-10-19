@@ -96,7 +96,7 @@ class RecordingActivity : AppCompatActivity() {
                     Log.d("Live", "onReceive: liveData = " + liveData)
 
                     updateRespeckData(liveData)
-
+                    getActivity(liveData)
                     respeckOn = true
 
                 }
@@ -202,7 +202,16 @@ class RecordingActivity : AppCompatActivity() {
 
             val classes = arrayOf("Sitting", "Walking", "Standing", "Sitting", "Walking", "Standing","Sitting", "Walking", "Standing","Sitting", "Walking", "Standing", "Sleeping")
             val className = classes[maxPos]
-            recordingActivityName.text = className
+            recordingActivityName.setText(className)
+
+
+
+            Log.d(TAG, "Sitting Here")
+            Log.d(TAG, className)
+            Log.d(TAG,"function called")
+
+
+
 
             // Releases model resources if no longer used.
             model.close()
@@ -219,7 +228,10 @@ class RecordingActivity : AppCompatActivity() {
 
 
             respeckOutputData.append(output)
-            getActivity(liveData)
+            Log.d(TAG,"call function")
+            recordingActivityName.text = "Lyding down"
+            recordingActivityName.setText("Lying down")
+
             Log.d(TAG, "updateRespeckData: appended to respeckoutputdata = " + output)
 
         }
