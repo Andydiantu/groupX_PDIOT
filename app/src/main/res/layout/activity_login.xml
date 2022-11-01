@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:background="@color/black_background">
+
+
+    <com.royrodriguez.transitionbutton.TransitionButton
+        android:id="@+id/login_button"
+        android:layout_width="299dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="30dp"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        app:defaultColor="@color/theme_green"
+        app:loaderColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password" />
+
+    <EditText
+        android:id="@+id/login_password"
+        android:text="Password"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/black_trans80"
+        android:layout_width="299dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/translucent"
+        android:inputType="textPassword"
+        android:ems="10"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_username" />
+
+    <EditText
+        android:id="@+id/login_username"
+        android:text="Username"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/black_trans80"
+        android:layout_width="299dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/translucent"
+        android:ems="10"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="199dp"
+        android:text="Forget password"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="56dp"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="199dp"
+        android:layout_marginEnd="70dp"
+        android:text="New account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        tools:layout_editor_absoluteX="263dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

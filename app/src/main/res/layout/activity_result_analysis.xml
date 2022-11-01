@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"              android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/white_70">
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent" android:background="@color/black_background">
 
-<com.github.mikephil.charting.charts.PieChart
-    android:id="@+id/pieChart"
-    android:layout_width="match_parent"
-    android:layout_marginRight="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_height="320dip" />
+    <me.nlmartian.silkcal.DayPickerView
+        xmlns:calendar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:background="@android:color/white"
+        calendar:drawRoundRect="false"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="320dip" />
 </LinearLayout>

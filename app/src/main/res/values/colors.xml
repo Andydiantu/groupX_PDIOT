@@ -22,9 +22,11 @@
     <color name="accent_500">#E91E63</color>
     <!--Pink 700-->
     <color name="accent_700">#C2185B</color>
+
     <color name="black_trans80">#33000000</color>
+    <color name="theme_green">#22D290</color>
 
-
+    <color name="black_background">#cc030303</color>
     <color name="blue_grey">#455A64</color>
     <color name="red">#F44336</color>
     <color name="pink">#E91E63</color>

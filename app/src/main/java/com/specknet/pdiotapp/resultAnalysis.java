@@ -15,19 +15,50 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
-public class resultAnalysis extends AppCompatActivity {
+import me.nlmartian.silkcal.DatePickerController;
+import me.nlmartian.silkcal.DayPickerView;
+import me.nlmartian.silkcal.SimpleMonthAdapter;
+
+public class resultAnalysis extends AppCompatActivity implements DatePickerController {
     private final String TAG = this.getClass().getName();
     private PieChart pieChart;
+    private DayPickerView calendarView;
+
+    private HashMap<String, Integer> activities = new HashMap<String, Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_analysis);
 
+        calendarView = findViewById(R.id.calendar_view);
+        calendarView.setController(this);
+
+        readActivityData("2022/11/1");
+
         pieChart = findViewById(R.id.pieChart);
         setPieChart(pieChart);
+
+
+    }
+
+    @Override
+    public int getMaxYear() {
+        return 0;
+    }
+
+    @Override
+    public void onDayOfMonthSelected(int year, int month, int day) {
+
+    }
+
+    @Override
+    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
+
     }
 
     private void setPieChart(PieChart pieChart) {
@@ -65,15 +96,20 @@ public class resultAnalysis extends AppCompatActivity {
         pieChart.invalidate();
     }
 
-//
-//    /**
-//     * Call when the activity start.
-//     */
-//    @Override
-//    protected void onStart() {
-//        Log.d(TAG, "Activity onStart");
-//        super.onStart();
-//    }
+    //TODO
+    private void readActivityData(String date){
+        //use date to search the activities info and store in the variable 'activities'
+        //current date is "2022/11/1"
+        //in activities, data structure should be (<String>, <Integer>), e.g.('sitting', 300) means sit for 300 seconds
+        //in activities, ('total', xxx) is compulsory
+        //example:
+        activities.put("total", 600);
+        activities.put("sitting", 300);
+        activities.put("walking", 30);
+        activities.put("running", 150);
+        activities.put("lyingDown", 120);
+
+    }
 
     /**
      * Call when the activity restart.
@@ -92,6 +128,9 @@ public class resultAnalysis extends AppCompatActivity {
         Log.d(TAG, "Activity onDestroy");
         super.onDestroy();
     }
+
+
+
 
 
 
