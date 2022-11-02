@@ -38,27 +38,27 @@ public class LoginActivity extends AppCompatActivity {
                 storeUserInfo(username, password);
 
                 // Do networking task or background work here.
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        boolean isSuccessful = true;
-//
-//                        // Choose a stop animation if your call was succesful or not
-//                        if (isSuccessful) {
-//                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
-//                                @Override
-//                                public void onAnimationStopEnd() {
-//                                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                                    startActivity(intent);
-//                                }
-//                            });
-//                        } else {
-//                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
-//                        }
-//                    }
-//                }, 2000);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean isSuccessful = true;
+
+                        // Choose a stop animation if your call was succesful or not
+                        if (isSuccessful) {
+                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
+                                @Override
+                                public void onAnimationStopEnd() {
+                                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    startActivity(intent);
+                                }
+                            });
+                        } else {
+                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
+                        }
+                    }
+                }, 2000);
             }
         });
     }
