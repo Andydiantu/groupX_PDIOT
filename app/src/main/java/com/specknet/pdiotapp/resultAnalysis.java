@@ -43,7 +43,6 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
         pieChart = findViewById(R.id.pieChart);
         setPieChart(pieChart);
 
-
     }
 
     @Override

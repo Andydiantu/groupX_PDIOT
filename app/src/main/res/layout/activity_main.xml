@@ -17,69 +17,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100px"
-            android:text="I want to"
+            android:text="@string/record_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/record_button"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/record_button"
-            android:layout_width="350px"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100px"
-            android:background="#03A9F4"
-            android:text="Record data"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintBottom_toTopOf="@+id/live_button"/>
-
-
-        <Button
-            android:id="@+id/live_button"
-            android:layout_width="350px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100px"
-            android:background="#03A9F4"
-            android:text="Watch live processing"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/record_button"
-            app:layout_constraintBottom_toTopOf="@+id/ble_button"/>
-
-
-        <Button
-            android:id="@+id/ble_button"
-            android:layout_width="350px"
-            android:layout_height="wrap_content"
-            android:text="Connect sensors"
-            android:layout_marginTop="100px"
-            android:layout_marginBottom="100px"
-            android:background="#03A9F4"
-            android:textColor="#FFFFFF"
-            app:layout_constraintTop_toBottomOf="@+id/live_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/result_button"
-            />
-
-        <Button
-            android:id="@+id/result_button"
-            android:layout_width="350px"
-            android:layout_height="wrap_content"
-            android:text="Result Analysis"
-            android:layout_marginTop="100px"
-            android:layout_marginBottom="150px"
-            android:background="#03A9F4"
-            android:textColor="#FFFFFF"
-            app:layout_constraintTop_toBottomOf="@+id/ble_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            tools:layout_editor_absoluteX="0dp">
+
+            <Button
+                android:id="@+id/record_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#03A9F4"
+                android:text="History"
+                android:scaleType="center"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/result_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#03A9F4"
+                android:text="Result"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/ble_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#03A9F4"
+                android:text="Connect"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/live_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#03A9F4"
+                android:text="live"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

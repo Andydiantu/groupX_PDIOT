@@ -9,14 +9,13 @@ import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
 import android.os.Bundle
+import android.os.IBinder
 import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.AllCaps
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.specknet.pdiotapp.R
 import com.specknet.pdiotapp.barcode.BarcodeActivity
@@ -24,7 +23,7 @@ import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.Utils
 import kotlinx.android.synthetic.main.activity_connecting.*
 import java.util.*
-import kotlin.experimental.and
+
 
 class ConnectingActivity : AppCompatActivity() {
 
@@ -48,6 +47,23 @@ class ConnectingActivity : AppCompatActivity() {
     var nfcAdapter: NfcAdapter? = null
     val MIME_TEXT_PLAIN = "application/vnd.bluetooth.le.oob"
     private val TAG = "NFCReader"
+
+    //connect cloud
+    private lateinit var mService: CloudService
+    private var mBound: Boolean = false
+    private var isConnected: Boolean = false
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as CloudService.MyBinder
+            mService = binder.getService()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            Log.d("connect cloud service", "service ends")
+            mBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +98,14 @@ class ConnectingActivity : AppCompatActivity() {
             ).apply()
 
             startSpeckService()
+            startConnectCloud()
 
         }
 
         restartConnectionButton.setOnClickListener {
             startSpeckService()
+            stopConnectCloud()
+            startConnectCloud()
         }
 
 
@@ -150,9 +169,33 @@ class ConnectingActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "NFC Disabled", Toast.LENGTH_LONG).show()
         }
-
-
     }
+
+    fun startConnectCloud() {
+        //check if two sensors are connected
+        val isRespeckConnected = true
+        val isThingyConnected = true
+        isConnected = isRespeckConnected && isThingyConnected
+        if(isConnected){
+            Log.d("connect cloud service", "Starting service")
+
+            // bind the service
+            val startIntent = Intent(this, CloudService::class.java)
+            startService(startIntent)
+            this.bindService(
+                Intent(this, CloudService::class.java),
+                connection,
+                BIND_AUTO_CREATE
+            )
+
+        }
+    }
+
+    fun stopConnectCloud(){
+        this.stopService(Intent(this, CloudService::class.java))
+        Log.d("connect cloud service", "Stop service")
+    }
+
 
     fun startSpeckService() {
         // TODO if it's not already running
