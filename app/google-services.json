@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "334860881023",
+    "project_id": "iotwearable-86723",
+    "storage_bucket": "iotwearable-86723.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334860881023:android:b5305768676075650e034a",
+        "android_client_info": {
+          "package_name": "com.specknet.pdiotapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334860881023-9reqo84p036sdkldtcvho49p4mmcl022.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ2o9l5Kp_DD-U81VUwZFNi38tL9yuxwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334860881023-9reqo84p036sdkldtcvho49p4mmcl022.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
