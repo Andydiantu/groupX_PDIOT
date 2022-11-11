@@ -1,5 +1,6 @@
 package com.specknet.pdiotapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -13,11 +14,17 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.nlmartian.silkcal.DatePickerController;
 import me.nlmartian.silkcal.DayPickerView;
@@ -28,7 +35,7 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
     private PieChart pieChart;
     private DayPickerView calendarView;
 
-    private HashMap<String, Integer> activities = new HashMap<String, Integer>();
+    private HashMap<String, Object> activities = new HashMap<String, Object>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +109,28 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
         //in activities, data structure should be (<String>, <Integer>), e.g.('sitting', 300) means sit for 300 seconds
         //in activities, ('total', xxx) is compulsory
         //example:
-        activities.put("total", 600);
-        activities.put("sitting", 300);
-        activities.put("walking", 30);
-        activities.put("running", 150);
-        activities.put("lyingDown", 120);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Data").document(date);
+
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        for (Map.Entry<String, Object> entry : document.getData().entrySet()) {
+                            activities.put(entry.getKey(), entry.getValue());
+                        }
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
 
     }
 

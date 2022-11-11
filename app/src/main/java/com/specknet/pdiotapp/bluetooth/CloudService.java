@@ -17,6 +17,9 @@ public class CloudService extends Service {
 
     //TODO
     public void updateDatabase() {
+
+
+
         cnt++;
     }
 
