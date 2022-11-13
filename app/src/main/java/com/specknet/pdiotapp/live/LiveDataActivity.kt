@@ -1,10 +1,10 @@
 package com.specknet.pdiotapp.live
 
 import android.content.*
+import android.graphics.Typeface
 import android.os.*
 import android.util.Log
-import android.util.TypedValue
-import android.widget.TextView
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -38,7 +38,8 @@ class LiveDataActivity : AppCompatActivity() {
     lateinit var respeckChart: LineChart
     lateinit var thingyChart: LineChart
 
-    lateinit var cur_activity: TextView
+//    lateinit var cur_activity: TextView
+    lateinit var menu_live: Button
 
     // global broadcast receiver so we can unregister it
     lateinit var respeckLiveUpdateReceiver: BroadcastReceiver
@@ -70,9 +71,12 @@ class LiveDataActivity : AppCompatActivity() {
 
         setupCharts()
 
-        cur_activity = findViewById(R.id.cur_activity_txt)
-        cur_activity.setText("Sitting")
-        cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+//        cur_activity = findViewById(R.id.cur_activity_txt)
+//        cur_activity.setText("Sitting")
+//        cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        menu_live=findViewById(R.id.live_live_button)
+        val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
+        menu_live.setTypeface(iconfont)
 
         startService(Intent(this, ActivityIdentifyService::class.java))
         this.bindService(

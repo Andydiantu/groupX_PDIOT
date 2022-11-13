@@ -62,5 +62,5 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-    <string name="record_icon">&#xe659;</string>>
+    <string name="home_icon">&#xf0174;\nHOME</string>
 </resources>
