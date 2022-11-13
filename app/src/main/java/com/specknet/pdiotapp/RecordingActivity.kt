@@ -1,13 +1,11 @@
 package com.specknet.pdiotapp
 
-import android.annotation.SuppressLint
 import android.content.*
 import android.os.*
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.specknet.pdiotapp.live.ActivityIdentifyService
 import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.CountUpTimer
@@ -162,24 +160,25 @@ class RecordingActivity : AppCompatActivity() {
         thingyMag = findViewById(R.id.thingy_mag)
     }
 
-    private fun getActivity(liveData: RESpeckLiveData){
+    private fun getActivity(reSpeckLiveData: RESpeckLiveData, ){
         try {
             val model: Model = Model.newInstance(applicationContext)
 
 
-            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 6)
+            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
             // Creates inputs for reference.
-            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 6), DataType.FLOAT32)
+            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
             byteBuffer.order(ByteOrder.nativeOrder());
 
             // ADD VALUES
             for (j in 0 until 50) {
-                byteBuffer.putFloat(liveData.accelX)
-                byteBuffer.putFloat(liveData.accelY)
-                byteBuffer.putFloat(liveData.accelZ)
-                byteBuffer.putFloat(liveData.gyro.x)
-                byteBuffer.putFloat(liveData.gyro.y)
-                byteBuffer.putFloat(liveData.gyro.z)
+                byteBuffer.putFloat(reSpeckLiveData.accelX)
+                byteBuffer.putFloat(reSpeckLiveData.accelY)
+                byteBuffer.putFloat(reSpeckLiveData.accelZ)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+
             }
 
             inputFeature0.loadBuffer(byteBuffer)
