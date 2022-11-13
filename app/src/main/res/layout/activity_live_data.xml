@@ -98,18 +98,20 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:scaleType="center"
-            android:text="History"
+            android:text="@string/record_icon"
             android:background="@drawable/menu_border"
             android:textStyle="bold"
+            android:textSize="14dp"
             android:textColor="@color/deep_grey"
             android:stateListAnimator="@null"/>
 
         <Button
-            android:id="@+id/live_result_button"
+            android:id="@+id/live_history_button"
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:background="@drawable/menu_border"
-            android:text="Result"
+            android:text="@string/history_icon"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/deep_grey"
             android:stateListAnimator="@null"/>
@@ -119,7 +121,8 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:background="@drawable/menu_border"
-            android:text="Connect"
+            android:text="@string/connect_icon"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/deep_grey"
             android:stateListAnimator="@null"/>
@@ -127,7 +130,7 @@
         <Button
             android:id="@+id/live_live_button"
             android:layout_width="105dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/menu_border"
             android:text="@string/home_icon"
             android:textSize="14dp"

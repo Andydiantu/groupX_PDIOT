@@ -13,6 +13,9 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.specknet.pdiotapp.R
+import com.specknet.pdiotapp.RecordingActivity
+import com.specknet.pdiotapp.bluetooth.ConnectingActivity
+import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
@@ -40,6 +43,9 @@ class LiveDataActivity : AppCompatActivity() {
 
 //    lateinit var cur_activity: TextView
     lateinit var menu_live: Button
+    lateinit var menu_history: Button
+    lateinit var menu_record: Button
+    lateinit var menu_connect: Button
 
     // global broadcast receiver so we can unregister it
     lateinit var respeckLiveUpdateReceiver: BroadcastReceiver
@@ -75,8 +81,16 @@ class LiveDataActivity : AppCompatActivity() {
 //        cur_activity.setText("Sitting")
 //        cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
         menu_live=findViewById(R.id.live_live_button)
+        menu_history=findViewById(R.id.live_history_button)
+        menu_record=findViewById(R.id.live_record_button)
+        menu_connect=findViewById(R.id.live_ble_button)
         val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
         menu_live.setTypeface(iconfont)
+        menu_history.setTypeface(iconfont)
+        menu_record.setTypeface(iconfont)
+        menu_connect.setTypeface(iconfont)
+
+        setupClickListeners()
 
         startService(Intent(this, ActivityIdentifyService::class.java))
         this.bindService(
@@ -275,6 +289,23 @@ class LiveDataActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun setupClickListeners() {
+        menu_connect.setOnClickListener {
+            val intent = Intent(this, ConnectingActivity::class.java)
+            startActivity(intent)
+        }
+
+        menu_record.setOnClickListener {
+            val intent = Intent(this, RecordingActivity::class.java)
+            startActivity(intent)
+        }
+
+        menu_history.setOnClickListener {
+            val intent = Intent(this, resultAnalysis::class.java)
+            startActivity(intent)
+        }
     }
 
 

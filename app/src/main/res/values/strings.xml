@@ -63,4 +63,7 @@
     <string name="login_failed">"Login failed"</string>
 
     <string name="home_icon">&#xf0174;\nHOME</string>
+    <string name="connect_icon">&#xe8ac;\nCONNECT</string>
+    <string name="record_icon">&#xe659;\nRECORD</string>
+    <string name="history_icon">&#xe630;\nHISTORY</string>>
 </resources>
