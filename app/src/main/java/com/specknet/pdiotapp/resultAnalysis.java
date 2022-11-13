@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -19,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.specknet.pdiotapp.bluetooth.ConnectingActivity;
+import com.specknet.pdiotapp.live.LiveDataActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +40,7 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
     private final String TAG = this.getClass().getName();
     private PieChart pieChart;
     private DayPickerView calendarView;
+    private Button history_live, history_record, history_history, history_connect;
 
     private HashMap<String, Object> activities = new HashMap<String, Object>();
 
@@ -49,6 +56,8 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
 
         pieChart = findViewById(R.id.pieChart);
         setPieChart(pieChart);
+
+        setupClickListeners();
 
     }
 
@@ -132,6 +141,40 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
             }
         });
 
+    }
+
+    private void setupClickListeners() {
+        history_live=findViewById(R.id.history_live_button);
+        history_history=findViewById(R.id.history_history_button);
+        history_record=findViewById(R.id.history_record_button);
+        history_connect=findViewById(R.id.history_ble_button);
+        Typeface iconfont = Typeface.createFromAsset(getAssets(), "iconfont.ttf");
+        history_live.setTypeface(iconfont);
+        history_history.setTypeface(iconfont);
+        history_record.setTypeface(iconfont);
+        history_connect.setTypeface(iconfont);
+
+        history_connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(resultAnalysis.this, ConnectingActivity.class);
+                startActivity(intent);
+            }
+        });
+        history_live.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(resultAnalysis.this, LiveDataActivity.class);
+                startActivity(intent);
+            }
+        });
+        history_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(resultAnalysis.this, RecordingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

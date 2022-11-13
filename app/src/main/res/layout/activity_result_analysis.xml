@@ -1,20 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical" android:layout_width="match_parent"
-android:layout_height="match_parent" android:background="@color/black_background">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".resultAnalysis">
 
-    <me.nlmartian.silkcal.DayPickerView
-        xmlns:calendar="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calendar_view"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:background="@android:color/white"
-        calendar:drawRoundRect="false"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChart"
-        android:layout_width="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_height="320dip" />
-</LinearLayout>
+        <me.nlmartian.silkcal.DayPickerView
+            xmlns:calendar="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@android:color/white"
+            calendar:drawRoundRect="false"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_height="320dip" />
+
+        <LinearLayout
+            android:id="@+id/history_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/history_record_button"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:text="@string/record_icon"
+                android:background="@drawable/menu_border"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:textColor="@color/deep_grey"
+                android:stateListAnimator="@null"/>
+
+            <Button
+                android:id="@+id/history_history_button"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_border"
+                android:text="@string/history_icon"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/theme_green"
+                android:stateListAnimator="@null"/>
+
+            <Button
+                android:id="@+id/history_ble_button"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_border"
+                android:text="@string/connect_icon"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/deep_grey"
+                android:stateListAnimator="@null"/>
+
+            <Button
+                android:id="@+id/history_live_button"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_border"
+                android:text="@string/home_icon"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/deep_grey"
+                android:stateListAnimator="@null"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
