@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".resultAnalysis">
 
-    <me.nlmartian.silkcal.DayPickerView
-        xmlns:calendar="http://schemas.android.com/apk/res-auto"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:background="@android:color/white"
-        calendar:drawRoundRect="false"
+        android:layout_height="280dp"
+        app:mcv_selectionColor="@color/theme_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/pieChart"
@@ -23,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/history_menu"

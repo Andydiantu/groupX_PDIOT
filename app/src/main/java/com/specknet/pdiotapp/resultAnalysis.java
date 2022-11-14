@@ -3,17 +3,15 @@ package com.specknet.pdiotapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -24,26 +22,29 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.specknet.pdiotapp.bluetooth.ConnectingActivity;
 import com.specknet.pdiotapp.live.LiveDataActivity;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.nlmartian.silkcal.DatePickerController;
-import me.nlmartian.silkcal.DayPickerView;
-import me.nlmartian.silkcal.SimpleMonthAdapter;
-
-public class resultAnalysis extends AppCompatActivity implements DatePickerController {
+public class resultAnalysis extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
     private final String TAG = this.getClass().getName();
     private PieChart pieChart;
-    private DayPickerView calendarView;
+    private MaterialCalendarView calendarView;
     private Button history_live, history_record, history_history, history_connect;
 
     private HashMap<String, Object> activities = new HashMap<String, Object>();
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d MMM yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +52,15 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
         setContentView(R.layout.activity_result_analysis);
 
         calendarView = findViewById(R.id.calendar_view);
-        calendarView.setController(this);
+        calendarView.setOnDateChangedListener(this);
+        calendarView.setOnDateLongClickListener(this);
+        calendarView.setOnMonthChangedListener(this);
 
-        readActivityData("09-11-2022");
+        calendarView.setCurrentDate(CalendarDay.today());
+        calendarView.setDateSelected(CalendarDay.today(), true);
+        readActivityData(FORMATTER.format(CalendarDay.today().getDate()));
 
-        Log.d(TAG,"read database");
-
+        Log.d(TAG, "read database");
         activities.put("sitting", 300);
         activities.put("running", 150);
         activities.put("lyingDown", 120);
@@ -67,21 +71,28 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
 
         setupMenuBar();
 
-        }
-
-    @Override
-    public int getMaxYear() {
-        return 0;
     }
 
     @Override
-    public void onDayOfMonthSelected(int year, int month, int day) {
-
+    public void onDateSelected(
+            @NonNull MaterialCalendarView calendarView,
+            @NonNull CalendarDay date,
+            boolean selected) {
+        Log.d(TAG, FORMATTER.format(date.getDate()));
+//        readActivityData(FORMATTER.format(date.getDate()));
     }
 
     @Override
-    public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
+    public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
+        final String text = String.format("%s is available", FORMATTER.format(date.getDate()));
+//        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
+        Log.d(TAG, "month changed");
     }
 
     private void setPieChart(PieChart pieChart) {
