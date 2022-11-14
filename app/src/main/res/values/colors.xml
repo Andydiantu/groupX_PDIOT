@@ -55,4 +55,14 @@
     <color name="cyan_50">#E0F7FA</color>
     <color name="amber_50">#FFF8E1</color>
     <color name="purple_50">#F3E5F5</color>
+
+    <color name="pie_1">#e6f584</color>
+    <color name="pie_2">#B4EEB4</color>
+    <color name="pie_3">#40E0D0</color>
+    <color name="pie_4">#63B8FF</color>
+    <color name="pie_5">#7898e1</color>
+    <color name="pie_6">#A9A9A9</color>
+    <color name="pie_7">#BEBEBE</color>
+
+
 </resources>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -58,13 +60,16 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
         calendarView.setCurrentDate(CalendarDay.today());
         calendarView.setDateSelected(CalendarDay.today(), true);
-        readActivityData(FORMATTER.format(CalendarDay.today().getDate()));
+//        readActivityData(FORMATTER.format(CalendarDay.today().getDate()));
 
         Log.d(TAG, "read database");
-        activities.put("sitting", 300);
+        activities.put("sitting", 100);
         activities.put("running", 150);
         activities.put("lyingDown", 120);
-        activities.put("walking", 30);
+        activities.put("walking", 170);
+        activities.put("standing", 100);
+        activities.put("stairs", 150);
+        activities.put("desk work", 120);
 
         pieChart = findViewById(R.id.pieChart);
         setPieChart(pieChart);
@@ -79,7 +84,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @NonNull CalendarDay date,
             boolean selected) {
         Log.d(TAG, FORMATTER.format(date.getDate()));
-//        readActivityData(FORMATTER.format(date.getDate()));
+        readActivityData(FORMATTER.format(date.getDate()));
+        setPieChart(pieChart);
     }
 
     @Override
@@ -110,11 +116,22 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         }
 
         PieDataSet dataSet = new PieDataSet(strings,"");
-        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        String centerText = "Total time\n"+totalTime+" s";
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.pie_1));
+        colors.add(getResources().getColor(R.color.pie_2));
+        colors.add(getResources().getColor(R.color.pie_3));
+        colors.add(getResources().getColor(R.color.pie_4));
+        colors.add(getResources().getColor(R.color.pie_5));
+        colors.add(getResources().getColor(R.color.pie_6));
+        colors.add(getResources().getColor(R.color.pie_7));
+        dataSet.setColors(colors);
+
+        String centerText = "Total time\n"+totalTime+"s";
         pieChart.setCenterText(centerText);
         pieChart.setCenterTextSize(18f);
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
 
         PieData pieData = new PieData(dataSet);
         pieData.setDrawValues(true);
@@ -123,6 +140,14 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         pieData.setValueTextSize(12f);
 
         pieChart.setData(pieData);
+
+        Legend l = pieChart.getLegend();
+        l.setFormSize(10f);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setWordWrapEnabled(true);
+        l.setXEntrySpace(10f);
+
         pieChart.invalidate();
 
     }
