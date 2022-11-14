@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,14 +53,21 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
         calendarView = findViewById(R.id.calendar_view);
         calendarView.setController(this);
 
-        readActivityData("2022/11/1");
+        readActivityData("09-11-2022");
+
+        Log.d(TAG,"read database");
+
+        activities.put("sitting", 300);
+        activities.put("running", 150);
+        activities.put("lyingDown", 120);
+        activities.put("walking", 30);
 
         pieChart = findViewById(R.id.pieChart);
         setPieChart(pieChart);
 
-        setupClickListeners();
+        setupMenuBar();
 
-    }
+        }
 
     @Override
     public int getMaxYear() {
@@ -77,27 +85,23 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
     }
 
     private void setPieChart(PieChart pieChart) {
-
+        int totalTime = 0;
         List<PieEntry> strings = new ArrayList<>();
-        strings.add(new PieEntry(15f,"sitting"));
-        strings.add(new PieEntry(35f,"Walking"));
-        strings.add(new PieEntry(40f,"Running"));
-        strings.add(new PieEntry(20f,"LyingDown"));
 
-        PieDataSet dataSet = new PieDataSet(strings,"Label");
+        for (Map.Entry<String, Object> entry : activities.entrySet()) {
+            totalTime += (Integer) entry.getValue();
+        }
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(getResources().getColor(R.color.red));
-        colors.add(getResources().getColor(R.color.light_blue));
-        colors.add(getResources().getColor(R.color.lime));
-        colors.add(getResources().getColor(R.color.grey));
-        dataSet.setColors(colors);
+        for (Map.Entry<String, Object> entry : activities.entrySet()) {
+//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+            float time = 100*(Integer)entry.getValue() / totalTime ;
+            strings.add(new PieEntry(time, entry.getKey()));
+        }
 
-        Description description = new Description();
-        description.setText("");
-        pieChart.setDescription(description);
+        PieDataSet dataSet = new PieDataSet(strings,"");
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        String centerText = "Total time\n"+"3min";
+        String centerText = "Total time\n"+totalTime+" s";
         pieChart.setCenterText(centerText);
         pieChart.setCenterTextSize(18f);
 
@@ -109,6 +113,7 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
 
         pieChart.setData(pieData);
         pieChart.invalidate();
+
     }
 
     //TODO
@@ -143,7 +148,7 @@ public class resultAnalysis extends AppCompatActivity implements DatePickerContr
 
     }
 
-    private void setupClickListeners() {
+    private void setupMenuBar() {
         history_live=findViewById(R.id.history_live_button);
         history_history=findViewById(R.id.history_history_button);
         history_record=findViewById(R.id.history_record_button);

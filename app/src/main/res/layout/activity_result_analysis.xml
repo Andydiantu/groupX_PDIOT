@@ -6,34 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".resultAnalysis">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <me.nlmartian.silkcal.DayPickerView
+        xmlns:calendar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@android:color/white"
+        calendar:drawRoundRect="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/pieChart"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <me.nlmartian.silkcal.DayPickerView
-            xmlns:calendar="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendar_view"
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:background="@android:color/white"
-            calendar:drawRoundRect="false"/>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/history_menu"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_view"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_height="320dip" />
-
-        <LinearLayout
-            android:id="@+id/history_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+    <LinearLayout
+        android:id="@+id/history_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
                 android:id="@+id/history_record_button"
@@ -43,7 +47,7 @@
                 android:text="@string/record_icon"
                 android:background="@drawable/menu_border"
                 android:textStyle="bold"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textColor="@color/deep_grey"
                 android:stateListAnimator="@null"/>
 
@@ -53,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/menu_border"
                 android:text="@string/history_icon"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/theme_green"
                 android:stateListAnimator="@null"/>
@@ -63,11 +67,11 @@
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/menu_border"
+                android:stateListAnimator="@null"
                 android:text="@string/connect_icon"
-                android:textSize="14dp"
-                android:textStyle="bold"
                 android:textColor="@color/deep_grey"
-                android:stateListAnimator="@null"/>
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/history_live_button"
@@ -75,10 +79,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/menu_border"
                 android:text="@string/home_icon"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/deep_grey"
                 android:stateListAnimator="@null"/>
-        </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
