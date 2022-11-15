@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.*
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -19,6 +20,10 @@ import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
+import pl.droidsonroids.gif.GifDrawable
+import pl.droidsonroids.gif.GifDrawableBuilder
+import pl.droidsonroids.gif.GifImageView
+import java.io.IOException
 
 
 class LiveDataActivity : AppCompatActivity() {
@@ -47,6 +52,10 @@ class LiveDataActivity : AppCompatActivity() {
     lateinit var menu_record: Button
     lateinit var menu_connect: Button
 
+    lateinit var gifImageView: GifImageView
+    lateinit var imageViewA: ImageView
+    lateinit var imageViewB: ImageView
+
     // global broadcast receiver so we can unregister it
     lateinit var respeckLiveUpdateReceiver: BroadcastReceiver
     lateinit var thingyLiveUpdateReceiver: BroadcastReceiver
@@ -70,6 +79,9 @@ class LiveDataActivity : AppCompatActivity() {
             mIsBound = false
         }
     }
+
+
+//    var gifFromResource = GifDrawable(resources, R.drawable.walking)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -295,6 +307,23 @@ class LiveDataActivity : AppCompatActivity() {
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
             startActivity(intent)
+
+//            gifImageView.setImageResource(R.drawable.walking)
+//            multiCallback.removeView(imageViewB) //remove second view
+//
+//            val newGifDrawable: GifDrawable = loadGif("gif_sample2.gif")
+
+            /**
+             * Set new gif. This call will stuck first gif animation.
+             *  But the same problem will be if we call  'imageViewB.setImageDrawable(null)' or  'imageViewB.setImageBitmap(...)' etc
+             *
+             */
+            /**
+             * Set new gif. This call will stuck first gif animation.
+             * But the same problem will be if we call  'imageViewB.setImageDrawable(null)' or  'imageViewB.setImageBitmap(...)' etc
+             *
+             */
+//            imageViewB.setImageDrawable(newGifDrawable)
         }
 
         menu_record.setOnClickListener {
@@ -308,6 +337,15 @@ class LiveDataActivity : AppCompatActivity() {
         }
     }
 
+    fun loadGif(assetName: String): GifDrawable? {
+        val gifBuilder = GifDrawableBuilder()
+        try {
+            return gifBuilder.from(assets, assetName).build()
+        } catch (e: IOException) {
+            Log.d("Load GIF", "loadGif error", e)
+        }
+        return null
+    }
 
     override fun onDestroy() {
         super.onDestroy()
