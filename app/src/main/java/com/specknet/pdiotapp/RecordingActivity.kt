@@ -94,7 +94,7 @@ class RecordingActivity : AppCompatActivity() {
                     Log.d("Live", "onReceive: liveData = " + liveData)
 
                     updateRespeckData(liveData)
-                    getActivity(liveData)
+                    // getActivity(liveData)
                     respeckOn = true
 
                 }
