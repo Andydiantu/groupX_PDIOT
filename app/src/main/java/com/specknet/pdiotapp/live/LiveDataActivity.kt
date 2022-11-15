@@ -2,10 +2,12 @@ package com.specknet.pdiotapp.live
 
 import android.content.*
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.*
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -20,11 +22,6 @@ import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
-import pl.droidsonroids.gif.GifDrawable
-import pl.droidsonroids.gif.GifDrawableBuilder
-import pl.droidsonroids.gif.GifImageView
-import java.io.IOException
-
 
 class LiveDataActivity : AppCompatActivity() {
     private val TAG = this.javaClass.name
@@ -46,15 +43,13 @@ class LiveDataActivity : AppCompatActivity() {
     lateinit var respeckChart: LineChart
     lateinit var thingyChart: LineChart
 
-//    lateinit var cur_activity: TextView
+    lateinit var cur_activity: TextView
     lateinit var menu_live: Button
     lateinit var menu_history: Button
     lateinit var menu_record: Button
     lateinit var menu_connect: Button
 
-    lateinit var gifImageView: GifImageView
-    lateinit var imageViewA: ImageView
-    lateinit var imageViewB: ImageView
+    lateinit var imageView: ImageView
 
     // global broadcast receiver so we can unregister it
     lateinit var respeckLiveUpdateReceiver: BroadcastReceiver
@@ -65,23 +60,23 @@ class LiveDataActivity : AppCompatActivity() {
     val filterTestRespeck = IntentFilter(Constants.ACTION_RESPECK_LIVE_BROADCAST)
     val filterTestThingy = IntentFilter(Constants.ACTION_THINGY_BROADCAST)
 
-    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
-    private var mIsBound = false
-    private val mServiceConnection: ServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Log.d(TAG, "onServiceConnected: LiveDataActivity")
-            myService = service as ActivityIdentifyService.ActivityIdentifyBinder
-            mIsBound = true
-        }
+//    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
+//    private var mIsBound = false
+//    private val mServiceConnection: ServiceConnection = object : ServiceConnection {
+//        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+//            Log.d(TAG, "onServiceConnected: LiveDataActivity")
+//            myService = service as ActivityIdentifyService.ActivityIdentifyBinder
+//            mIsBound = true
+//        }
+//
+//        override fun onServiceDisconnected(name: ComponentName) {
+//            Log.d(TAG, "onServiceDisconnected: onServiceDisconnected")
+//            mIsBound = false
+//        }
+//    }
 
-        override fun onServiceDisconnected(name: ComponentName) {
-            Log.d(TAG, "onServiceDisconnected: onServiceDisconnected")
-            mIsBound = false
-        }
-    }
-
-
-//    var gifFromResource = GifDrawable(resources, R.drawable.walking)
+    var currnet_activity = "N/A"
+    var icon = R.drawable.lying
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,9 +84,9 @@ class LiveDataActivity : AppCompatActivity() {
 
         setupCharts()
 
-//        cur_activity = findViewById(R.id.cur_activity_txt)
-//        cur_activity.setText("Sitting")
-//        cur_activity.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        cur_activity = findViewById(R.id.current_activity)
+        cur_activity.setText(currnet_activity)
+
         menu_live=findViewById(R.id.live_live_button)
         menu_history=findViewById(R.id.live_history_button)
         menu_record=findViewById(R.id.live_record_button)
@@ -104,11 +99,15 @@ class LiveDataActivity : AppCompatActivity() {
 
         setupClickListeners()
 
-        startService(Intent(this, ActivityIdentifyService::class.java))
-        this.bindService(
-            Intent(this, ActivityIdentifyService::class.java),
-            mServiceConnection, BIND_AUTO_CREATE
-        )
+        setupCurrentActivity()
+
+
+
+//        startService(Intent(this, ActivityIdentifyService::class.java))
+//        this.bindService(
+//            Intent(this, ActivityIdentifyService::class.java),
+//            mServiceConnection, BIND_AUTO_CREATE
+//        )
 
         // set up the broadcast receiver
         respeckLiveUpdateReceiver = object : BroadcastReceiver() {
@@ -307,23 +306,6 @@ class LiveDataActivity : AppCompatActivity() {
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
             startActivity(intent)
-
-//            gifImageView.setImageResource(R.drawable.walking)
-//            multiCallback.removeView(imageViewB) //remove second view
-//
-//            val newGifDrawable: GifDrawable = loadGif("gif_sample2.gif")
-
-            /**
-             * Set new gif. This call will stuck first gif animation.
-             *  But the same problem will be if we call  'imageViewB.setImageDrawable(null)' or  'imageViewB.setImageBitmap(...)' etc
-             *
-             */
-            /**
-             * Set new gif. This call will stuck first gif animation.
-             * But the same problem will be if we call  'imageViewB.setImageDrawable(null)' or  'imageViewB.setImageBitmap(...)' etc
-             *
-             */
-//            imageViewB.setImageDrawable(newGifDrawable)
         }
 
         menu_record.setOnClickListener {
@@ -335,25 +317,33 @@ class LiveDataActivity : AppCompatActivity() {
             val intent = Intent(this, resultAnalysis::class.java)
             startActivity(intent)
         }
-    }
 
-    fun loadGif(assetName: String): GifDrawable? {
-        val gifBuilder = GifDrawableBuilder()
-        try {
-            return gifBuilder.from(assets, assetName).build()
-        } catch (e: IOException) {
-            Log.d("Load GIF", "loadGif error", e)
+        menu_live.setOnClickListener {
+            currnet_activity = "running"
+            icon = R.drawable.running
         }
-        return null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(mServiceConnection)
-        mIsBound = false
-        unregisterReceiver(respeckLiveUpdateReceiver)
-        unregisterReceiver(thingyLiveUpdateReceiver)
-        looperRespeck.quit()
-        looperThingy.quit()
+    fun setupCurrentActivity() {
+        imageView = findViewById(R.id.imageView_activity)
+        var mTimeHandler: Handler = object : Handler() {
+            override fun handleMessage(msg: Message) {
+                if (msg.what == 0) {
+                    cur_activity.setText(currnet_activity)
+                    imageView.setImageResource(icon)
+                    sendEmptyMessageDelayed(0, 500)
+                }
+            }
+        }
+        mTimeHandler.sendEmptyMessageDelayed(0, 500)
     }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        unbindService(mServiceConnection)
+//        mIsBound = false
+//        unregisterReceiver(respeckLiveUpdateReceiver)
+//        unregisterReceiver(thingyLiveUpdateReceiver)
+//        looperRespeck.quit()
+//        looperThingy.quit()
+//    }
 }
