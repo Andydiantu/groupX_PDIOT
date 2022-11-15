@@ -36,20 +36,20 @@
 
 <!--        </LinearLayout>-->
 
-        <pl.droidsonroids.gif.GifImageView
+<!--        <pl.droidsonroids.gif.GifImageView-->
+<!--            android:id="@+id/imageView_activity"-->
+<!--            android:layout_width="400dp"-->
+<!--            android:layout_height="250dp"-->
+<!--            android:src="@drawable/desk"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <ImageView
             android:id="@+id/imageView_activity"
             android:layout_width="400dp"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:src="@drawable/lying"
+            android:layout_marginTop="30dp"
             app:layout_constraintTop_toTopOf="parent" />
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView_activity"-->
-<!--            android:layout_width="413dp"-->
-<!--            android:layout_height="202dp"-->
-<!--            android:src="@drawable/walking"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <LinearLayout
             android:id="@+id/respeck_graphs"

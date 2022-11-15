@@ -85,8 +85,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @NonNull CalendarDay date,
             boolean selected) {
         Log.d(TAG, FORMATTER.format(date.getDate()));
-        readActivityData(FORMATTER.format(date.getDate()));
-        setPieChart(pieChart);
+//        readActivityData(FORMATTER.format(date.getDate()));
+//        setPieChart(pieChart);
     }
 
     @Override
@@ -98,7 +98,6 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
         Log.d(TAG, "month changed");
     }
 
