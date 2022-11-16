@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".bluetooth.ConnectingActivity">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="wrap_content"
@@ -169,8 +175,66 @@
 
         </LinearLayout>
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/connect_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/connect_live_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/home_icon"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/deep_grey"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/connect_record_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:scaleType="center"
+            android:text="@string/record_icon"
+            android:background="@drawable/menu_border"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:textColor="@color/deep_grey"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/connect_history_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/history_icon"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/deep_grey"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/connect_ble_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/connect_icon"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/theme_green"
+            android:stateListAnimator="@null"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -3,6 +3,7 @@ package com.specknet.pdiotapp.bluetooth
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.*
+import android.graphics.Typeface
 import android.nfc.NfcAdapter
 import android.nfc.NfcManager
 import android.nfc.Tag
@@ -18,7 +19,10 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.specknet.pdiotapp.R
+import com.specknet.pdiotapp.RecordingActivity
 import com.specknet.pdiotapp.barcode.BarcodeActivity
+import com.specknet.pdiotapp.live.LiveDataActivity
+import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.Utils
 import kotlinx.android.synthetic.main.activity_connecting.*
@@ -41,6 +45,11 @@ class ConnectingActivity : AppCompatActivity() {
     private lateinit var thingyID: EditText
 //    private lateinit var connectThingyButton: Button
 //    private lateinit var disconnectThingyButton: Button
+
+    lateinit var connect_live: Button
+    lateinit var connect_history: Button
+    lateinit var connect_record: Button
+    lateinit var connect_connect: Button
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -76,6 +85,8 @@ class ConnectingActivity : AppCompatActivity() {
         restartConnectionButton = findViewById(R.id.restart_service_button)
 
         thingyID = findViewById(R.id.thingy_code)
+
+        setupClickListeners()
 
         scanRespeckButton.setOnClickListener {
             val barcodeScanner = Intent(this, BarcodeActivity::class.java)
@@ -414,6 +425,33 @@ class ConnectingActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    fun setupClickListeners() {
+        connect_live=findViewById(R.id.connect_live_button)
+        connect_history=findViewById(R.id.connect_history_button)
+        connect_record=findViewById(R.id.connect_record_button)
+        connect_connect=findViewById(R.id.connect_ble_button)
+        val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
+        connect_live.setTypeface(iconfont)
+        connect_history.setTypeface(iconfont)
+        connect_record.setTypeface(iconfont)
+        connect_connect.setTypeface(iconfont)
+
+        connect_record.setOnClickListener {
+            val intent = Intent(this, RecordingActivity::class.java)
+            startActivity(intent)
+        }
+
+        connect_history.setOnClickListener {
+            val intent = Intent(this, resultAnalysis::class.java)
+            startActivity(intent)
+        }
+
+        connect_live.setOnClickListener {
+            val intent = Intent(this, LiveDataActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

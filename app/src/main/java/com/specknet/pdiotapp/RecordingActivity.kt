@@ -1,11 +1,14 @@
 package com.specknet.pdiotapp
 
 import android.content.*
+import android.graphics.Typeface
 import android.os.*
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.specknet.pdiotapp.bluetooth.ConnectingActivity
+import com.specknet.pdiotapp.live.LiveDataActivity
 import com.specknet.pdiotapp.ml.Model
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.CountUpTimer
@@ -57,7 +60,12 @@ class RecordingActivity : AppCompatActivity() {
     private lateinit var thingyAccel: TextView
     private lateinit var thingyGyro: TextView
     private lateinit var thingyMag: TextView
-    private lateinit var recordingActivityName: TextView
+//    private lateinit var recordingActivityName: TextView
+
+    lateinit var record_live: Button
+    lateinit var record_history: Button
+    lateinit var record_record: Button
+    lateinit var record_connect: Button
 
     var thingyOn = false
     var respeckOn = false
@@ -79,7 +87,9 @@ class RecordingActivity : AppCompatActivity() {
 
         setupInputs()
 
-        recordingActivityName = findViewById(R.id.recording_activity_txt)
+        setupClickListeners()
+
+//        recordingActivityName = findViewById(R.id.recording_activity_txt)
 
         Log.d(TAG, "onCreate: setting up respeck receiver")
         // register respeck receiver
@@ -160,64 +170,64 @@ class RecordingActivity : AppCompatActivity() {
         thingyMag = findViewById(R.id.thingy_mag)
     }
 
-    private fun getActivity(reSpeckLiveData: RESpeckLiveData, ){
-        try {
-            val model: Model = Model.newInstance(applicationContext)
-
-
-            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
-            // Creates inputs for reference.
-            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
-            byteBuffer.order(ByteOrder.nativeOrder());
-
-            // ADD VALUES
-            for (j in 0 until 50) {
-                byteBuffer.putFloat(reSpeckLiveData.accelX)
-                byteBuffer.putFloat(reSpeckLiveData.accelY)
-                byteBuffer.putFloat(reSpeckLiveData.accelZ)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
-
-            }
-
-            inputFeature0.loadBuffer(byteBuffer)
-
-            // Runs model inference and gets result.
-            val outputs: Model.Outputs = model.process(inputFeature0)
-            val outputFeature0: TensorBuffer = outputs.getOutputFeature0AsTensorBuffer()
-
-            val confidences = outputFeature0.floatArray
-            // find the index of the class with the biggest confidence.
-            // find the index of the class with the biggest confidence.
-            var maxPos = 0
-            var maxConfidence = 0f
-            for (i in confidences.indices) {
-                if (confidences[i] > maxConfidence) {
-                    maxConfidence = confidences[i]
-                    maxPos = i
-                }
-            }
-
-            val classes = arrayOf("Sitting", "Walking", "Standing", "Sitting", "Walking", "Standing","Sitting", "Walking", "Standing","Sitting", "Walking", "Standing", "Sleeping")
-            val className = classes[maxPos]
-            recordingActivityName.setText(className)
-
-
-
-            Log.d(TAG, "Sitting Here")
-            Log.d(TAG, className)
-            Log.d(TAG,"function called")
-
-
-
-
-            // Releases model resources if no longer used.
-            model.close()
-        } catch (e: IOException) {
-            // TODO Handle the exception
-        }
-    }
+//    private fun getActivity(reSpeckLiveData: RESpeckLiveData, ){
+//        try {
+//            val model: Model = Model.newInstance(applicationContext)
+//
+//
+//            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
+//            // Creates inputs for reference.
+//            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
+//            byteBuffer.order(ByteOrder.nativeOrder());
+//
+//            // ADD VALUES
+//            for (j in 0 until 50) {
+//                byteBuffer.putFloat(reSpeckLiveData.accelX)
+//                byteBuffer.putFloat(reSpeckLiveData.accelY)
+//                byteBuffer.putFloat(reSpeckLiveData.accelZ)
+//                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
+//                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
+//                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+//
+//            }
+//
+//            inputFeature0.loadBuffer(byteBuffer)
+//
+//            // Runs model inference and gets result.
+//            val outputs: Model.Outputs = model.process(inputFeature0)
+//            val outputFeature0: TensorBuffer = outputs.getOutputFeature0AsTensorBuffer()
+//
+//            val confidences = outputFeature0.floatArray
+//            // find the index of the class with the biggest confidence.
+//            // find the index of the class with the biggest confidence.
+//            var maxPos = 0
+//            var maxConfidence = 0f
+//            for (i in confidences.indices) {
+//                if (confidences[i] > maxConfidence) {
+//                    maxConfidence = confidences[i]
+//                    maxPos = i
+//                }
+//            }
+//
+//            val classes = arrayOf("Sitting", "Walking", "Standing", "Sitting", "Walking", "Standing","Sitting", "Walking", "Standing","Sitting", "Walking", "Standing", "Sleeping")
+//            val className = classes[maxPos]
+//            recordingActivityName.setText(className)
+//
+//
+//
+//            Log.d(TAG, "Sitting Here")
+//            Log.d(TAG, className)
+//            Log.d(TAG,"function called")
+//
+//
+//
+//
+//            // Releases model resources if no longer used.
+//            model.close()
+//        } catch (e: IOException) {
+//            // TODO Handle the exception
+//        }
+//    }
 
     private fun updateRespeckData(liveData: RESpeckLiveData) {
         if (mIsRespeckRecording) {
@@ -227,9 +237,9 @@ class RecordingActivity : AppCompatActivity() {
 
 
             respeckOutputData.append(output)
-            Log.d(TAG,"call function")
-            recordingActivityName.text = "Lyding down"
-            recordingActivityName.setText("Lying down")
+//            Log.d(TAG,"call function")
+//            recordingActivityName.text = "Lyding down"
+//            recordingActivityName.setText("Lying down")
 
             Log.d(TAG, "updateRespeckData: appended to respeckoutputdata = " + output)
 
@@ -533,6 +543,33 @@ class RecordingActivity : AppCompatActivity() {
         sensorType = sensorTypeSpinner.selectedItem.toString()
         notes = notesInput.text.toString().trim()
 
+    }
+
+    fun setupClickListeners() {
+        record_live=findViewById(R.id.record_live_button)
+        record_history=findViewById(R.id.record_history_button)
+        record_record=findViewById(R.id.record_record_button)
+        record_connect=findViewById(R.id.record_ble_button)
+        val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
+        record_live.setTypeface(iconfont)
+        record_history.setTypeface(iconfont)
+        record_record.setTypeface(iconfont)
+        record_connect.setTypeface(iconfont)
+
+        record_connect.setOnClickListener {
+            val intent = Intent(this, ConnectingActivity::class.java)
+            startActivity(intent)
+        }
+
+        record_history.setOnClickListener {
+            val intent = Intent(this, resultAnalysis::class.java)
+            startActivity(intent)
+        }
+
+        record_live.setOnClickListener {
+            val intent = Intent(this, LiveDataActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {

@@ -39,9 +39,20 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
+                android:id="@+id/history_live_button"
+                android:layout_width="105dp"
+                android:layout_height="60dp"
+                android:background="@drawable/menu_border"
+                android:text="@string/home_icon"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/deep_grey"
+                android:stateListAnimator="@null"/>
+
+            <Button
                 android:id="@+id/history_record_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:scaleType="center"
                 android:text="@string/record_icon"
                 android:background="@drawable/menu_border"
@@ -53,7 +64,7 @@
             <Button
                 android:id="@+id/history_history_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menu_border"
                 android:text="@string/history_icon"
                 android:textSize="14sp"
@@ -64,7 +75,7 @@
             <Button
                 android:id="@+id/history_ble_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menu_border"
                 android:stateListAnimator="@null"
                 android:text="@string/connect_icon"
@@ -72,16 +83,6 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/history_live_button"
-                android:layout_width="105dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/menu_border"
-                android:text="@string/home_icon"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/deep_grey"
-                android:stateListAnimator="@null"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

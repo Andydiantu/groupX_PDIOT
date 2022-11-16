@@ -74,7 +74,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/respeck_chart"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="200dp"/>
 
         </LinearLayout>
 
@@ -92,7 +92,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/thingy_chart"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="200dp"/>
 
         </LinearLayout>
 
@@ -109,9 +109,20 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
+            android:id="@+id/live_live_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/home_icon"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/theme_green"
+            android:stateListAnimator="@null"/>
+
+        <Button
             android:id="@+id/live_record_button"
             android:layout_width="105dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:scaleType="center"
             android:text="@string/record_icon"
             android:background="@drawable/menu_border"
@@ -123,7 +134,7 @@
         <Button
             android:id="@+id/live_history_button"
             android:layout_width="105dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:background="@drawable/menu_border"
             android:text="@string/history_icon"
             android:textSize="14dp"
@@ -134,23 +145,12 @@
         <Button
             android:id="@+id/live_ble_button"
             android:layout_width="105dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:background="@drawable/menu_border"
             android:text="@string/connect_icon"
             android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/deep_grey"
-            android:stateListAnimator="@null"/>
-
-        <Button
-            android:id="@+id/live_live_button"
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_border"
-            android:text="@string/home_icon"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:textColor="@color/theme_green"
             android:stateListAnimator="@null"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
