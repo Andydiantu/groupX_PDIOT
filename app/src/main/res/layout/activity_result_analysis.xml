@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="350dp"
         app:mcv_selectionColor="@color/theme_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_height="280dp"
+        android:layout_height="350dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/history_menu"
@@ -39,24 +39,35 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
+                android:id="@+id/history_live_button"
+                android:layout_width="105dp"
+                android:layout_height="60dp"
+                android:background="@drawable/menu_border"
+                android:text="@string/home_icon"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black_font"
+                android:stateListAnimator="@null"/>
+
+            <Button
                 android:id="@+id/history_record_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:scaleType="center"
                 android:text="@string/record_icon"
                 android:background="@drawable/menu_border"
                 android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="@color/deep_grey"
+                android:textSize="15sp"
+                android:textColor="@color/black_font"
                 android:stateListAnimator="@null"/>
 
             <Button
                 android:id="@+id/history_history_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menu_border"
                 android:text="@string/history_icon"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/theme_green"
                 android:stateListAnimator="@null"/>
@@ -64,24 +75,14 @@
             <Button
                 android:id="@+id/history_ble_button"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menu_border"
                 android:stateListAnimator="@null"
                 android:text="@string/connect_icon"
-                android:textColor="@color/deep_grey"
-                android:textSize="14sp"
+                android:textColor="@color/black_font"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/history_live_button"
-                android:layout_width="105dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/menu_border"
-                android:text="@string/home_icon"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/deep_grey"
-                android:stateListAnimator="@null"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

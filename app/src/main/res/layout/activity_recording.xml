@@ -6,30 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".RecordingActivity">
 
-    <TextView
-        android:id="@+id/title_record_respeck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record Data"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/sensor_position_side_container"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        />
+<!--    <TextView-->
+<!--        android:id="@+id/title_record_respeck"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Record Data"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/sensor_position_side_container"-->
+<!--        />-->
 
     <!--  Sensor and activity type  -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/sensor_position_side_container"
-        app:layout_constraintTop_toBottomOf="@id/title_record_respeck"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/activity_ss_type_container"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="0dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -89,7 +88,7 @@
 
     <!-- Subject ID and notes -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/activity_ss_type_container"
@@ -154,7 +153,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
@@ -169,29 +168,26 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Start recording"
-            android:id="@+id/start_recording_button"
-            android:layout_marginBottom="10dp"/>
+            android:id="@+id/start_recording_button"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Cancel recording"
-            android:id="@+id/cancel_recording_button"
-            android:layout_marginBottom="10dp"/>
+            android:id="@+id/cancel_recording_button"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Stop recording"
-            android:id="@+id/stop_recording_button"
-            android:layout_marginBottom="10dp"/>
+            android:id="@+id/stop_recording_button"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/countup_container"
@@ -209,100 +205,165 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/sensor_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sensor_data"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/countup_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="left"
-        android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countup_container">
 
         <LinearLayout
+            android:id="@+id/thingy_live_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/thingy_live_data"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thingy Live Data"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/thingy_accel"
-                android:text="Accel = "
-                android:layout_marginTop="5dp"/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Accel = " />
+
+            <TextView
                 android:id="@+id/thingy_gyro"
-                android:text="Gyro = "/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Gyro = " />
+
+            <TextView
                 android:id="@+id/thingy_mag"
-                android:text="Mag = "/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mag = " />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/respeck_live_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/respeck_live_data"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Respeck Live Data"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/respeck_accel"
-                android:text="Accel = "
-                android:layout_marginTop="5dp"/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Accel = " />
+
+            <TextView
                 android:id="@+id/respeck_gyro"
-                android:text="Gyro = "/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gyro = " />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/record_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/sensor_data"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/recording_activity_title"
-            android:text="Current Activity:"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp" />
+        <Button
+            android:id="@+id/record_live_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/home_icon"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/black_font"
+            android:stateListAnimator="@null"/>
 
-        <TextView
-            android:id="@+id/recording_activity_txt"
-            android:layout_marginRight="10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"/>
+        <Button
+            android:id="@+id/record_record_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:scaleType="center"
+            android:text="@string/record_icon"
+            android:background="@drawable/menu_border"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/theme_green"
+            android:stateListAnimator="@null"/>
 
+        <Button
+            android:id="@+id/record_history_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:stateListAnimator="@null"
+            android:text="@string/history_icon"
+            android:textColor="@color/black_font"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/record_ble_button"
+            android:layout_width="105dp"
+            android:layout_height="60dp"
+            android:background="@drawable/menu_border"
+            android:text="@string/connect_icon"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/black_font"
+            android:stateListAnimator="@null"/>
     </LinearLayout>
+
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/sensor_data"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/recording_activity_title"-->
+<!--            android:text="Current Activity:"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="20sp"-->
+<!--            android:layout_marginLeft="10dp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/recording_activity_txt"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:maxLines="2"/>-->
+
+<!--    </LinearLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
