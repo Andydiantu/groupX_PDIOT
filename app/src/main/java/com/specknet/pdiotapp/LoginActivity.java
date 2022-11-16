@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.royrodriguez.transitionbutton.TransitionButton;
+import com.specknet.pdiotapp.live.LiveDataActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                             transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
                                 @Override
                                 public void onAnimationStopEnd() {
-                                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                    Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     startActivity(intent);
                                 }

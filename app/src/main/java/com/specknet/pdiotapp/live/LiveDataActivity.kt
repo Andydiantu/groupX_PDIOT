@@ -87,16 +87,6 @@ class LiveDataActivity : AppCompatActivity() {
         cur_activity = findViewById(R.id.current_activity)
         cur_activity.setText(currnet_activity)
 
-        menu_live=findViewById(R.id.live_live_button)
-        menu_history=findViewById(R.id.live_history_button)
-        menu_record=findViewById(R.id.live_record_button)
-        menu_connect=findViewById(R.id.live_ble_button)
-        val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
-        menu_live.setTypeface(iconfont)
-        menu_history.setTypeface(iconfont)
-        menu_record.setTypeface(iconfont)
-        menu_connect.setTypeface(iconfont)
-
         setupClickListeners()
 
         setupCurrentActivity()
@@ -303,6 +293,16 @@ class LiveDataActivity : AppCompatActivity() {
     }
 
     fun setupClickListeners() {
+        menu_live=findViewById(R.id.live_live_button)
+        menu_history=findViewById(R.id.live_history_button)
+        menu_record=findViewById(R.id.live_record_button)
+        menu_connect=findViewById(R.id.live_ble_button)
+        val iconfont = Typeface.createFromAsset(assets, "iconfont.ttf")
+        menu_live.setTypeface(iconfont)
+        menu_history.setTypeface(iconfont)
+        menu_record.setTypeface(iconfont)
+        menu_connect.setTypeface(iconfont)
+
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
             startActivity(intent)
