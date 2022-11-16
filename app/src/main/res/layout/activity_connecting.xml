@@ -195,9 +195,9 @@
             android:layout_height="60dp"
             android:background="@drawable/menu_border"
             android:text="@string/home_icon"
-            android:textSize="14dp"
+            android:textSize="15dp"
             android:textStyle="bold"
-            android:textColor="@color/deep_grey"
+            android:textColor="@color/black_font"
             android:stateListAnimator="@null"/>
 
         <Button
@@ -208,8 +208,8 @@
             android:text="@string/record_icon"
             android:background="@drawable/menu_border"
             android:textStyle="bold"
-            android:textSize="14dp"
-            android:textColor="@color/deep_grey"
+            android:textSize="15dp"
+            android:textColor="@color/black_font"
             android:stateListAnimator="@null"/>
 
         <Button
@@ -218,9 +218,9 @@
             android:layout_height="60dp"
             android:background="@drawable/menu_border"
             android:text="@string/history_icon"
-            android:textSize="14dp"
+            android:textSize="15dp"
             android:textStyle="bold"
-            android:textColor="@color/deep_grey"
+            android:textColor="@color/black_font"
             android:stateListAnimator="@null"/>
 
         <Button
@@ -229,7 +229,7 @@
             android:layout_height="60dp"
             android:background="@drawable/menu_border"
             android:text="@string/connect_icon"
-            android:textSize="14dp"
+            android:textSize="15dp"
             android:textStyle="bold"
             android:textColor="@color/theme_green"
             android:stateListAnimator="@null"/>

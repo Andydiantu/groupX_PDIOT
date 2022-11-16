@@ -13,6 +13,7 @@
 
     <!-- Design colors -->
     <color name="indicator_unselected">#4D000000</color>
+    <color name="black_font">#b3030303</color>
 
     <!--Indigo 500-->
     <color name="primary_500">#3F51B5</color>
