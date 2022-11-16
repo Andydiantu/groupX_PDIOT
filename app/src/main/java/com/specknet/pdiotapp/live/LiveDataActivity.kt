@@ -20,10 +20,19 @@ import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
+import org.json.JSONArray
 import pl.droidsonroids.gif.GifDrawable
 import pl.droidsonroids.gif.GifDrawableBuilder
 import pl.droidsonroids.gif.GifImageView
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 
 class LiveDataActivity : AppCompatActivity() {
@@ -128,6 +137,8 @@ class LiveDataActivity : AppCompatActivity() {
                     val x = liveData.accelX
                     val y = liveData.accelY
                     val z = liveData.accelZ
+                    
+
 
                     time += 1
                     updateGraph("respeck", x, y, z)
@@ -302,6 +313,73 @@ class LiveDataActivity : AppCompatActivity() {
 
 
     }
+
+    private fun getActivity(reSpeckLiveData: RESpeckLiveData ){
+        try {
+            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
+            // Creates inputs for reference.
+            //val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
+            byteBuffer.order(ByteOrder.nativeOrder());
+            // ADD VALUES
+            for (j in 0 until 50) {
+                byteBuffer.putFloat(reSpeckLiveData.accelX)
+                byteBuffer.putFloat(reSpeckLiveData.accelY)
+                byteBuffer.putFloat(reSpeckLiveData.accelZ)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+
+                byteBuffer.putFloat(reSpeckLiveData.accelX)
+                byteBuffer.putFloat(reSpeckLiveData.accelY)
+                byteBuffer.putFloat(reSpeckLiveData.accelZ)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
+                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+            }
+
+            sendPostRequest(byteBuffer)
+            Log.d(TAG,"function called")
+
+        } catch (e: IOException) {
+            // TODO Handle the exception
+        }
+    }
+
+    fun sendPostRequest(data: ByteBuffer) {
+        val arr = ByteArray(data.remaining())
+        data.get(arr)
+
+        val jsonArray = JSONArray(arr);
+
+        var reqParam = URLEncoder.encode("liveData", "UTF-8") + "=" + jsonArray
+        val mURL = URL("<Your API Link>")
+
+        with(mURL.openConnection() as HttpURLConnection) {
+            // optional default is GET
+            requestMethod = "POST"
+
+            val wr = OutputStreamWriter(getOutputStream());
+            wr.write(reqParam);
+            wr.flush();
+
+            println("URL : $url")
+            println("Response Code : $responseCode")
+
+            BufferedReader(InputStreamReader(inputStream)).use {
+                val response = StringBuffer()
+
+                var inputLine = it.readLine()
+                while (inputLine != null) {
+                    response.append(inputLine)
+                    inputLine = it.readLine()
+                }
+                println("Response from cloud: $response")
+
+            }
+        }
+    }
+
+
 
     fun setupClickListeners() {
         menu_connect.setOnClickListener {

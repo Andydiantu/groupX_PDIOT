@@ -47,7 +47,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
     private HashMap<String, Object> activities = new HashMap<String, Object>();
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    private DocumentSnapshot data ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +63,20 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
         calendarView.setCurrentDate(CalendarDay.today());
         calendarView.setDateSelected(CalendarDay.today(), true);
-//        readActivityData(FORMATTER.format(CalendarDay.today().getDate()));
+        pieChart = findViewById(R.id.pieChart);
+
+
+        readActivityData(FORMATTER.format(CalendarDay.today().getDate()));
+
+        Log.d(TAG, "ACTIVIT: " + String.valueOf(activities));
+
 
         Log.d(TAG, "read database");
+
+        Log.d(TAG, "actin up: " + activities);
+
+
+        /*
         activities.put("sitting", 100);
         activities.put("running", 150);
         activities.put("lyingDown", 120);
@@ -72,8 +85,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         activities.put("stairs", 150);
         activities.put("desk work", 120);
 
-        pieChart = findViewById(R.id.pieChart);
-        setPieChart(pieChart);
+         */
+
 
         setupMenuBar();
 
@@ -84,9 +97,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @NonNull MaterialCalendarView calendarView,
             @NonNull CalendarDay date,
             boolean selected) {
-        Log.d(TAG, FORMATTER.format(date.getDate()));
-//        readActivityData(FORMATTER.format(date.getDate()));
-//        setPieChart(pieChart);
+            Log.d(TAG, FORMATTER.format(date.getDate()));
+            readActivityData(FORMATTER.format(date.getDate()));
     }
 
     @Override
@@ -106,12 +118,12 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         List<PieEntry> strings = new ArrayList<>();
 
         for (Map.Entry<String, Object> entry : activities.entrySet()) {
-            totalTime += (Integer) entry.getValue();
+            totalTime +=  ((Long) entry.getValue()).intValue();
         }
 
         for (Map.Entry<String, Object> entry : activities.entrySet()) {
 //            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            float time = 100*(Integer)entry.getValue() / totalTime ;
+            float time = 100*((Long) entry.getValue()).intValue() / totalTime ;
             strings.add(new PieEntry(time, entry.getKey()));
         }
 
@@ -161,7 +173,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         //example:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Data").document(date);
-
+        Map <String, Object> hm = new HashMap<String, Object>();
+        activities.clear();
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -170,9 +183,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        for (Map.Entry<String, Object> entry : document.getData().entrySet()) {
-                            activities.put(entry.getKey(), entry.getValue());
-                        }
+                        activities.putAll(document.getData());
+                        Log.d(TAG, "act len: " + activities.size());
+                        setPieChart(pieChart);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -181,6 +194,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
                 }
             }
         });
+
+
 
     }
 

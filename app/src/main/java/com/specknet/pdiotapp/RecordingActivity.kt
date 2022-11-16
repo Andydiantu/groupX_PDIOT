@@ -164,7 +164,6 @@ class RecordingActivity : AppCompatActivity() {
         try {
             val model: Model = Model.newInstance(applicationContext)
 
-
             val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
             // Creates inputs for reference.
             val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
