@@ -75,19 +75,6 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
         Log.d(TAG, "actin up: " + activities);
 
-
-        /*
-        activities.put("sitting", 100);
-        activities.put("running", 150);
-        activities.put("lyingDown", 120);
-        activities.put("walking", 170);
-        activities.put("standing", 100);
-        activities.put("stairs", 150);
-        activities.put("desk work", 120);
-
-         */
-
-
         setupMenuBar();
 
     }
@@ -98,6 +85,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @NonNull CalendarDay date,
             boolean selected) {
             Log.d(TAG, FORMATTER.format(date.getDate()));
+            activities.clear();
+
             readActivityData(FORMATTER.format(date.getDate()));
     }
 
@@ -173,8 +162,6 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         //example:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Data").document(date);
-        Map <String, Object> hm = new HashMap<String, Object>();
-        activities.clear();
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

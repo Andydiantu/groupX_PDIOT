@@ -1,8 +1,10 @@
 package com.specknet.pdiotapp.live
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.*
 import android.util.Log
 import android.widget.Button
@@ -15,6 +17,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import com.specknet.pdiotapp.R
 import com.specknet.pdiotapp.RecordingActivity
 import com.specknet.pdiotapp.bluetooth.ConnectingActivity
@@ -22,19 +27,11 @@ import com.specknet.pdiotapp.resultAnalysis
 import com.specknet.pdiotapp.utils.Constants
 import com.specknet.pdiotapp.utils.RESpeckLiveData
 import com.specknet.pdiotapp.utils.ThingyLiveData
-import org.json.JSONArray
-import pl.droidsonroids.gif.GifDrawable
-import pl.droidsonroids.gif.GifDrawableBuilder
-import pl.droidsonroids.gif.GifImageView
-import java.io.BufferedReader
+import okhttp3.*
+import org.json.JSONObject
 import java.io.IOException
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.URL
-import java.net.URLEncoder
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class LiveDataActivity : AppCompatActivity() {
@@ -73,6 +70,14 @@ class LiveDataActivity : AppCompatActivity() {
 
     val filterTestRespeck = IntentFilter(Constants.ACTION_RESPECK_LIVE_BROADCAST)
     val filterTestThingy = IntentFilter(Constants.ACTION_THINGY_BROADCAST)
+    val JSON = MediaType.get("application/json")
+
+    private val predictionToActivity = HashMap<String, String>()
+
+
+    var respeckDataArr = arrayOf<Array<Float>>()
+    var thingyDataArr = arrayOf<Array<Float>>()
+
 
 //    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
 //    private var mIsBound = false
@@ -105,7 +110,36 @@ class LiveDataActivity : AppCompatActivity() {
 
         setupCurrentActivity()
 
+        predictionToActivity.put("Climbing stairs", "Stairs")
+        predictionToActivity.put("Descending stairs", "Stairs")
+        predictionToActivity.put("Desk work", "Desk work")
+        predictionToActivity.put("Lying down left", "Lying down")
+        predictionToActivity.put("Lying down on back", "Lying down")
+        predictionToActivity.put("Lying down right", "Lying down")
+        predictionToActivity.put("Lying down on stomach", "Lying down")
+        predictionToActivity.put("Movement", "Movement")
+        predictionToActivity.put("Running", "Running")
+        predictionToActivity.put("Sitting", "Sitting")
+        predictionToActivity.put("Sitting bent backward", "Sitting")
+        predictionToActivity.put("Sitting bent forward", "Sitting")
+        predictionToActivity.put("Standing", "Standing")
+        predictionToActivity.put("Walking at normal speed", "Walking")
 
+        /*
+
+        var finalDataArr = arrayOf<Array<Float>>()
+
+        for (i in 1..50) {
+            var reading = arrayOf<Float>(0.2f,0.3f, 0.1f, 0.4f,
+                0.2f,0.3f, 0.1f, 0.4f,
+                0.2f,0.3f, 0.1f, 0.4f
+                )
+            finalDataArr += reading
+        }
+
+        sendPostRequest(finalDataArr);
+
+        */
 
 //        startService(Intent(this, ActivityIdentifyService::class.java))
 //        this.bindService(
@@ -133,6 +167,10 @@ class LiveDataActivity : AppCompatActivity() {
                     val z = liveData.accelZ
 
 
+                    if (respeckDataArr.size >= 50 && thingyDataArr.size >= 50 ){
+                        getActivity()
+                    }
+                    addRespeckData(liveData)
 
                     time += 1
                     updateGraph("respeck", x, y, z)
@@ -167,6 +205,11 @@ class LiveDataActivity : AppCompatActivity() {
                     val x = liveData.accelX
                     val y = liveData.accelY
                     val z = liveData.accelZ
+
+
+                    addThingyData(liveData)
+
+
 
                     time += 1
                     updateGraph("thingy", x, y, z)
@@ -308,70 +351,112 @@ class LiveDataActivity : AppCompatActivity() {
 
     }
 
-    private fun getActivity(reSpeckLiveData: RESpeckLiveData ){
-        try {
-            val byteBuffer: ByteBuffer = ByteBuffer.allocateDirect(4 * 50 * 12)
-            // Creates inputs for reference.
-            //val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 50, 12), DataType.FLOAT32)
-            byteBuffer.order(ByteOrder.nativeOrder());
-            // ADD VALUES
-            for (j in 0 until 50) {
-                byteBuffer.putFloat(reSpeckLiveData.accelX)
-                byteBuffer.putFloat(reSpeckLiveData.accelY)
-                byteBuffer.putFloat(reSpeckLiveData.accelZ)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+    fun addRespeckData(reSpeckLiveData: RESpeckLiveData){
+        var recordingData = arrayOf<Float>(
+            reSpeckLiveData.accelX, reSpeckLiveData.accelY, reSpeckLiveData.accelZ,
+            reSpeckLiveData.gyro.x, reSpeckLiveData.gyro.y, reSpeckLiveData.gyro.z,
+        )
 
-                byteBuffer.putFloat(reSpeckLiveData.accelX)
-                byteBuffer.putFloat(reSpeckLiveData.accelY)
-                byteBuffer.putFloat(reSpeckLiveData.accelZ)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.x)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.y)
-                byteBuffer.putFloat(reSpeckLiveData.gyro.z)
+        respeckDataArr += recordingData
+    }
+
+    fun addThingyData(thingyLiveData: ThingyLiveData){
+        var recordingData = arrayOf<Float>(
+            thingyLiveData.accelX, thingyLiveData.accelY, thingyLiveData.accelZ,
+            thingyLiveData.gyro.x, thingyLiveData.gyro.y, thingyLiveData.gyro.z,
+        )
+
+        thingyDataArr += recordingData
+    }
+
+    private fun getActivity(){
+        try {
+
+            var finalDataArr = arrayOf<Array<Float>>()
+
+            for (i in 0..49) {
+                var reading = respeckDataArr[i] + thingyDataArr[i]
+                finalDataArr += reading
             }
 
-            sendPostRequest(byteBuffer)
+            sendPostRequest(finalDataArr);
+
+
+
             Log.d(TAG,"function called")
+            respeckDataArr = arrayOf<Array<Float>>()
+            thingyDataArr = arrayOf<Array<Float>>()
 
         } catch (e: IOException) {
             // TODO Handle the exception
         }
     }
 
-    fun sendPostRequest(data: ByteBuffer) {
-        val arr = ByteArray(data.remaining())
-        data.get(arr)
+    data class prediction(
+        val predictionValue: String,
+    )
 
-        val jsonArray = JSONArray(arr);
+    fun sendPostRequest(data: Array<Array<Float>>) {
 
-        var reqParam = URLEncoder.encode("liveData", "UTF-8") + "=" + jsonArray
-        val mURL = URL("<Your API Link>")
+        val gson = Gson()
+        val dataStr = gson.toJson(data).toString();
 
-        with(mURL.openConnection() as HttpURLConnection) {
-            // optional default is GET
-            requestMethod = "POST"
+        val okHttpClient = OkHttpClient()
 
-            val wr = OutputStreamWriter(getOutputStream());
-            wr.write(reqParam);
-            wr.flush();
-
-            println("URL : $url")
-            println("Response Code : $responseCode")
-
-            BufferedReader(InputStreamReader(inputStream)).use {
-                val response = StringBuffer()
-
-                var inputLine = it.readLine()
-                while (inputLine != null) {
-                    response.append(inputLine)
-                    inputLine = it.readLine()
-                }
-                println("Response from cloud: $response")
-
+        val requestBody: RequestBody = RequestBody.create(JSON, dataStr)
+        val request = Request.Builder()
+            .method("POST", requestBody)
+            .url("https://finalmodel-dbtkg2xr6q-ey.a.run.app")
+            .build()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // Handle this
             }
-        }
+
+            override fun onResponse(call: Call, response: Response) {
+                /*
+                val prediction: prediction =
+                    gson.fromJson(response.body()!!.string(), prediction::class.java)
+                //Log.d(TAG, prediction.predictionValue);
+                */
+                val jsonData: String = response.body()!!.string()
+                Log.d(TAG, jsonData)
+                val Jobject = JSONObject(jsonData)
+                currnet_activity = Jobject.getString("prediction")
+                pushData(currnet_activity)
+            }
+        })
+
     }
+
+    fun pushData(data: String){
+        // CODE FOR GETTING DATE
+        var field = predictionToActivity.get(data)
+        //var field = data;
+        // CODE FOR GETTING DATE
+        val c = Calendar.getInstance().time
+        println("Current time => $c")
+
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val formattedDate = df.format(c)
+
+        val db = FirebaseFirestore.getInstance()
+
+        var dateRef = db.collection("Data").document(formattedDate);
+
+        if (field != null) {
+            dateRef
+                .update(field, FieldValue.increment(2))
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+        }
+
+
+
+
+    }
+
+
 
 
 
