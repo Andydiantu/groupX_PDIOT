@@ -14,9 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.royrodriguez.transitionbutton.TransitionButton;
 import com.specknet.pdiotapp.live.LiveDataActivity;
@@ -34,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     private TransitionButton transitionButton;
     private EditText username_view, password_view;
     private Button gotoSignup;
+
+    private String passwordRecvFromDB = "";
+    private boolean userExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,36 +60,9 @@ public class LoginActivity extends AppCompatActivity {
                 String username = username_view.getText().toString();
                 String password = password_view.getText().toString();
 
-//                storeUserInfo(username, password);
-                boolean isValid = validation(username, password);
+                validation(username, password);
 
-                if(!isValid) {
-                    Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
-                }else{
-                    transitionButton.startAnimation();
-                    // Do networking task or background work here.
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            boolean isSuccessful = true;
 
-                            // Choose a stop animation if your call was succesful or not
-                            if (isSuccessful) {
-                                transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
-                                    @Override
-                                    public void onAnimationStopEnd() {
-                                        Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                        startActivity(intent);
-                                    }
-                                });
-                            } else {
-                                transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
-                            }
-                        }
-                    }, 2000);
-                }
             }
         });
 
@@ -96,9 +75,70 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validation(String username, String password){
-        return true;
+    private void validation(String username, String password) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("Users").document(username);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        userExists = true;
+                        passwordRecvFromDB = (String) document.getData().get("password");
+                        loginLogic(password);
+                    } else {
+                        userExists = false;
+                        Toast.makeText(getApplicationContext(), "User does not exist", Toast.LENGTH_SHORT).show();
+
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    userExists = false;
+                    Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+
+    private void loginLogic(String password){
+        boolean isValid = passwordRecvFromDB.equals(password) && userExists;
+        Log.d(TAG, passwordRecvFromDB);
+        Log.d(TAG, String.valueOf(password));
+        Log.d(TAG, "BISH:" + String.valueOf(passwordRecvFromDB.equals(password)));
+
+        if (!isValid) {
+            Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
+        } else {
+            transitionButton.startAnimation();
+            // Do networking task or background work here.
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    boolean isSuccessful = true;
+
+                    // Choose a stop animation if your call was succesful or not
+                    if (isSuccessful) {
+                        transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
+                            @Override
+                            public void onAnimationStopEnd() {
+                                Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                            }
+                        });
+                    } else {
+                        transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
+                    }
+                }
+            }, 2000);
+        }
+    }
+
     //TODO
     private void storeUserInfo(String username, String password){
         // store username and password in the database
@@ -144,10 +184,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // CODE FOR CREATING SAMPLE DATA
         Map<String, Integer> activities = new HashMap<String, Integer>();
-        activities.put("total", 600);
-        activities.put("sitting", 300);
-        activities.put("walking", 30);
-        activities.put("running", 150);
+        activities.put("sitting", 0);
+        activities.put("walking", 0);
+        activities.put("running", 0);
         activities.put("lying down", 120);
 
 

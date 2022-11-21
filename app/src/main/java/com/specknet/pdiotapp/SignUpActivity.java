@@ -1,5 +1,6 @@
 package com.specknet.pdiotapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,8 +18,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.royrodriguez.transitionbutton.TransitionButton;
 import com.specknet.pdiotapp.live.LiveDataActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -47,13 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = password_view.getText().toString();
 
                 storeUserInfo(username, password);
-                checkUserInfo(username, password);
-
-                if(isValid){
-                    Toast.makeText(getApplicationContext(),"Sign up successfully",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Sign up filed",Toast.LENGTH_SHORT).show();
-                }
 
             }
         });
@@ -69,12 +70,41 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private void storeUserInfo(String username, String password){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "here brodie: " + String.valueOf(db));
+        // Create a new user with a first and last name
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("username", username);
+        user.put("password", password);
+
+        db.collection("Users").document(username)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        isValid = true;
+                        Toast.makeText(getApplicationContext(),"Sign up successfully",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                        isValid = false;
+                        Toast.makeText(getApplicationContext(),"Sign up failed",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+
+
+
         Log.d(TAG, username+password);
     }
 
-    private void checkUserInfo(String username, String password){
-        Log.d(TAG, username+password);
-        isValid = true;
-    }
+
 
 }

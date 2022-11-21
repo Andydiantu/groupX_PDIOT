@@ -17,6 +17,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
@@ -79,6 +81,8 @@ class LiveDataActivity : AppCompatActivity() {
     var respeckDataArr = arrayOf<Array<Float>>()
     var thingyDataArr = arrayOf<Array<Float>>()
 
+    private val username = "farSightJay"
+
 
 //    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
 //    private var mIsBound = false
@@ -136,7 +140,13 @@ class LiveDataActivity : AppCompatActivity() {
         acitivityToIcon.put("Running", R.drawable.running)
 
 
+        val c = Calendar.getInstance().time
+        println("Current time => $c")
 
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val formattedDate = df.format(c)
+
+        checkDataForDateExists(username, formattedDate)
 
 
 
@@ -385,6 +395,8 @@ class LiveDataActivity : AppCompatActivity() {
         thingyDataArr += recordingData
     }
 
+
+
     private fun getActivity(){
         try {
 
@@ -406,9 +418,6 @@ class LiveDataActivity : AppCompatActivity() {
         }
     }
 
-    data class prediction(
-        val predictionValue: String,
-    )
 
     fun sendPostRequest(data: Array<Array<Float>>) {
 
@@ -428,11 +437,6 @@ class LiveDataActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                /*
-                val prediction: prediction =
-                    gson.fromJson(response.body()!!.string(), prediction::class.java)
-                //Log.d(TAG, prediction.predictionValue);
-                */
                 val jsonData: String = response.body()!!.string()
                 Log.d(TAG, jsonData)
                 val Jobject = JSONObject(jsonData)
@@ -458,7 +462,7 @@ class LiveDataActivity : AppCompatActivity() {
 
         val db = FirebaseFirestore.getInstance()
 
-        var dateRef = db.collection("Data").document(formattedDate);
+        var dateRef = db.collection("Users").document(username).collection("Data").document(formattedDate)
 
         if (field != null) {
             dateRef
@@ -472,11 +476,64 @@ class LiveDataActivity : AppCompatActivity() {
 
     }
 
+    fun checkDataForDateExists(username: String, date: String ){
+        val db = FirebaseFirestore.getInstance()
+
+        var dateRef = db.collection("Users").document(username).collection("Data").document(date)
+
+        dateRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document.exists()) {
+                    Log.d(TAG, "Document exists!")
+                } else {
+                    Log.d(TAG, "Document does not exist!")
+                    initialiseDataForDate(username, date)
+                }
+            } else {
+                Log.d(TAG, "Failed with: ", task.exception)
+            }
+        }
+    }
+
+    fun initialiseDataForDate(username: String, date: String ) {
+        val db = FirebaseFirestore.getInstance()
+
+        // CODE FOR CREATING SAMPLE DATA
+        val activities = hashMapOf(
+            "Lying down" to 0,
+            "Sitting" to 0,
+            "Stairs" to 0,
+            "Standing" to 0,
+            "Walking" to 0,
+            "Running" to 0,
+            "Movement" to 0,
+            "Desk work" to 0
+        )
+
+        var dateRef = db.collection("Users").document(username).collection("Data").document(date)
+
+        // CODE FOR SETTING DATA FOR DATE
+        dateRef
+            .set(activities)
+            .addOnSuccessListener(OnSuccessListener<Void?> {
+                Log.d(
+                    TAG,
+                    "DocumentSnapshot added with ID: "
+                )
+            })
+            .addOnFailureListener(OnFailureListener { e -> Log.w(TAG, "Error adding document", e) })
+
+
+    }
 
 
 
 
-    fun setupClickListeners() {
+
+
+
+        fun setupClickListeners() {
         menu_live=findViewById(R.id.live_live_button)
         menu_history=findViewById(R.id.live_history_button)
         menu_record=findViewById(R.id.live_record_button)

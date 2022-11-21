@@ -51,6 +51,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
     private DocumentSnapshot data ;
 
+    private String username = "farSightJay";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,46 +112,49 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             totalTime +=  ((Long) entry.getValue()).intValue();
         }
 
-        for (Map.Entry<String, Object> entry : activities.entrySet()) {
-//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            float time = 100*((Long) entry.getValue()).intValue() / totalTime ;
-            strings.add(new PieEntry(time, entry.getKey()));
+        if (totalTime != 0) {
+
+            for (Map.Entry<String, Object> entry : activities.entrySet()) {
+                //            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                float time = 100 * ((Long) entry.getValue()).intValue() / totalTime;
+                strings.add(new PieEntry(time, entry.getKey()));
+            }
+
+            PieDataSet dataSet = new PieDataSet(strings, "");
+
+            ArrayList<Integer> colors = new ArrayList<>();
+            colors.add(getResources().getColor(R.color.pie_1));
+            colors.add(getResources().getColor(R.color.pie_2));
+            colors.add(getResources().getColor(R.color.pie_3));
+            colors.add(getResources().getColor(R.color.pie_4));
+            colors.add(getResources().getColor(R.color.pie_5));
+            colors.add(getResources().getColor(R.color.pie_6));
+            colors.add(getResources().getColor(R.color.pie_7));
+            dataSet.setColors(colors);
+
+            String centerText = "Total time\n" + totalTime + "s";
+            pieChart.setCenterText(centerText);
+            pieChart.setCenterTextSize(18f);
+            pieChart.setUsePercentValues(true);
+            pieChart.getDescription().setEnabled(false);
+
+            PieData pieData = new PieData(dataSet);
+            pieData.setDrawValues(true);
+
+            pieData.setValueFormatter(new PercentFormatter());
+            pieData.setValueTextSize(12f);
+
+            pieChart.setData(pieData);
+
+            Legend l = pieChart.getLegend();
+            l.setFormSize(10f);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            l.setWordWrapEnabled(true);
+            l.setXEntrySpace(10f);
+
+            pieChart.invalidate();
         }
-
-        PieDataSet dataSet = new PieDataSet(strings,"");
-
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.pie_1));
-        colors.add(getResources().getColor(R.color.pie_2));
-        colors.add(getResources().getColor(R.color.pie_3));
-        colors.add(getResources().getColor(R.color.pie_4));
-        colors.add(getResources().getColor(R.color.pie_5));
-        colors.add(getResources().getColor(R.color.pie_6));
-        colors.add(getResources().getColor(R.color.pie_7));
-        dataSet.setColors(colors);
-
-        String centerText = "Total time\n"+totalTime+"s";
-        pieChart.setCenterText(centerText);
-        pieChart.setCenterTextSize(18f);
-        pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-
-        PieData pieData = new PieData(dataSet);
-        pieData.setDrawValues(true);
-
-        pieData.setValueFormatter(new PercentFormatter());
-        pieData.setValueTextSize(12f);
-
-        pieChart.setData(pieData);
-
-        Legend l = pieChart.getLegend();
-        l.setFormSize(10f);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setWordWrapEnabled(true);
-        l.setXEntrySpace(10f);
-
-        pieChart.invalidate();
 
     }
 
@@ -161,7 +166,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         //in activities, ('total', xxx) is compulsory
         //example:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("Data").document(date);
+        DocumentReference docRef = db.collection("Users").document(username).collection("Data").document(date);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
