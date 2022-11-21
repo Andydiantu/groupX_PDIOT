@@ -209,6 +209,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, ConnectingActivity.class);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
         history_live.setOnClickListener(new View.OnClickListener() {
@@ -216,6 +217,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, LiveDataActivity.class);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
         history_record.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +225,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, RecordingActivity.class);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
     }

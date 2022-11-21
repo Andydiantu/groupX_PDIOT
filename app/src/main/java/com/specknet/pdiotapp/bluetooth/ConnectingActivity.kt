@@ -441,16 +441,19 @@ class ConnectingActivity : AppCompatActivity() {
         connect_record.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         connect_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         connect_live.setOnClickListener {
             val intent = Intent(this, LiveDataActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
     }
 

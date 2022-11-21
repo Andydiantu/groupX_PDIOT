@@ -474,16 +474,19 @@ class LiveDataActivity : AppCompatActivity() {
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         menu_record.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         menu_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         menu_live.setOnClickListener {

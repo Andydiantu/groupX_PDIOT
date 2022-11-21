@@ -559,16 +559,19 @@ class RecordingActivity : AppCompatActivity() {
         record_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         record_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         record_live.setOnClickListener {
             val intent = Intent(this, LiveDataActivity::class.java)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
     }
 
