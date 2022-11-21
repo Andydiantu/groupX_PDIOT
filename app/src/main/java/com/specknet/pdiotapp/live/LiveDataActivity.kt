@@ -36,6 +36,7 @@ import java.util.*
 
 class LiveDataActivity : AppCompatActivity() {
     private val TAG = this.javaClass.name
+    lateinit var username: String
 
     // global graph variables
     lateinit var dataSet_res_accel_x: LineDataSet
@@ -100,6 +101,12 @@ class LiveDataActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live_data)
+
+        val bundle = this.intent.extras
+        val str = bundle!!.getString("username")
+        if (str != null) {
+           username = str
+        }
 
         setupCharts()
 
@@ -473,25 +480,29 @@ class LiveDataActivity : AppCompatActivity() {
 
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         menu_record.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         menu_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
-        }
-
-        menu_live.setOnClickListener {
-            currnet_activity = "running"
-            icon = R.drawable.running
         }
     }
 

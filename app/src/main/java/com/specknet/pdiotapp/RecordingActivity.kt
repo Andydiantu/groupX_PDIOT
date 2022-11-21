@@ -24,6 +24,7 @@ import java.util.*
 
 class RecordingActivity : AppCompatActivity() {
     private val TAG = "RecordingActivity"
+    lateinit var username: String
     lateinit var sensorTypeSpinner: Spinner
     lateinit var activityTypeSpinner: Spinner
     lateinit var startRecordingButton: Button
@@ -75,6 +76,12 @@ class RecordingActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: here")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recording)
+
+        val bundle = this.intent.extras
+        val str = bundle!!.getString("username")
+        if (str != null) {
+            username = str
+        }
 
         respeckOutputData = StringBuilder()
         thingyOutputData = StringBuilder()
@@ -558,18 +565,27 @@ class RecordingActivity : AppCompatActivity() {
 
         record_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         record_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         record_live.setOnClickListener {
             val intent = Intent(this, LiveDataActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }

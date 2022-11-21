@@ -75,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onAnimationStopEnd() {
                                         Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("username", getUsername());
+                                        intent.putExtras(bundle);
                                         startActivity(intent);
                                     }
                                 });

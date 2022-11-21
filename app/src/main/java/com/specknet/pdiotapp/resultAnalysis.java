@@ -52,10 +52,17 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
     private DocumentSnapshot data ;
 
+    private String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_analysis);
+
+        Bundle bundle = this.getIntent().getExtras();
+        String str = bundle.getString("username");
+        if(str!=null)
+            username = str;
 
         calendarView = findViewById(R.id.calendar_view);
         calendarView.setOnDateChangedListener(this);
@@ -208,6 +215,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, ConnectingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 resultAnalysis.this.overridePendingTransition(0, 0);
             }
@@ -216,6 +226,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, LiveDataActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 resultAnalysis.this.overridePendingTransition(0, 0);
             }
@@ -224,6 +237,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, RecordingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 resultAnalysis.this.overridePendingTransition(0, 0);
             }

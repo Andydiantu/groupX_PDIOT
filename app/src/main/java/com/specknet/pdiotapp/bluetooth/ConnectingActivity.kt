@@ -57,6 +57,8 @@ class ConnectingActivity : AppCompatActivity() {
     val MIME_TEXT_PLAIN = "application/vnd.bluetooth.le.oob"
     private val TAG = "NFCReader"
 
+    lateinit var username: String
+
     //connect cloud
     private lateinit var mService: CloudService
     private var mBound: Boolean = false
@@ -77,6 +79,12 @@ class ConnectingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connecting)
+
+        val bundle = this.intent.extras
+        val str = bundle!!.getString("username")
+        if (str != null) {
+            username = str
+        }
 
         // scan respeck
         scanRespeckButton = findViewById(R.id.scan_respeck)
@@ -440,18 +448,27 @@ class ConnectingActivity : AppCompatActivity() {
 
         connect_record.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username", username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         connect_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
+            val bundle = Bundle()
+            bundle.putString("username", username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
 
         connect_live.setOnClickListener {
             val intent = Intent(this, LiveDataActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username", username)
+            intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
         }
