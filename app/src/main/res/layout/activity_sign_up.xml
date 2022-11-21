@@ -5,26 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EBEBEB"
-    tools:context=".LoginActivity">
+    tools:context=".SignUpActivity">
 
 
     <com.royrodriguez.transitionbutton.TransitionButton
-        android:id="@+id/login_button"
+        android:id="@+id/signup_button"
         android:layout_width="299dp"
         android:layout_height="40dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="56dp"
         android:layout_marginBottom="30dp"
-        android:text="Login"
+        android:text="Sign up"
         android:textColor="@android:color/white"
         app:defaultColor="@color/theme_green"
         app:loaderColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_password" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_password" />
 
     <EditText
-        android:id="@+id/login_password"
+        android:id="@+id/signup_password"
         android:text="Password"
         android:selectAllOnFocus="true"
         android:textColor="@color/black_trans80"
@@ -37,12 +37,12 @@
         android:background="@drawable/translucent"
         android:inputType="textPassword"
         android:ems="10"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/signup_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_username" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_username" />
 
     <EditText
-        android:id="@+id/login_username"
+        android:id="@+id/signup_username"
         android:text="Username"
         android:selectAllOnFocus="true"
         android:textColor="@color/black_trans80"
@@ -54,7 +54,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/translucent"
         android:ems="10"
-        app:layout_constraintBottom_toTopOf="@+id/login_password"
+        app:layout_constraintBottom_toTopOf="@+id/signup_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,19 +74,19 @@
 <!--        android:textColor="@android:color/white"/>-->
 
     <Button
-        android:id="@+id/login_signup"
+        android:id="@+id/signup_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="156dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginBottom="199dp"
         android:background="@drawable/menu_border"
-        android:stateListAnimator="@null"
-        android:text="New account"
         android:textColor="@android:color/black"
+        android:text="Log in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_button"
+        app:layout_constraintVertical_bias="0.147"
+        android:stateListAnimator="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

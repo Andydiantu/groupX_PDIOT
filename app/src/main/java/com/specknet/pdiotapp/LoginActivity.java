@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private TransitionButton transitionButton;
     private EditText username_view, password_view;
+    private Button gotoSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,44 +43,62 @@ public class LoginActivity extends AppCompatActivity {
         transitionButton = findViewById(R.id.login_button);
         username_view = findViewById(R.id.login_username);
         password_view = findViewById(R.id.login_password);
+        gotoSignup = findViewById(R.id.login_signup);
+        gotoSignup.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         transitionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start the loading animation when the user tap the button
-                transitionButton.startAnimation();
+
                 String username = username_view.getText().toString();
                 String password = password_view.getText().toString();
 
-                storeUserInfo(username, password);
+//                storeUserInfo(username, password);
+                boolean isValid = validation(username, password);
 
-                // Do networking task or background work here.
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean isSuccessful = true;
+                if(!isValid) {
+                    Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
+                }else{
+                    transitionButton.startAnimation();
+                    // Do networking task or background work here.
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isSuccessful = true;
 
-                        // Choose a stop animation if your call was succesful or not
-                        if (isSuccessful) {
-                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
-                                @Override
-                                public void onAnimationStopEnd() {
-                                    Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                    startActivity(intent);
-                                }
-                            });
-                        } else {
-                            transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
+                            // Choose a stop animation if your call was succesful or not
+                            if (isSuccessful) {
+                                transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, new TransitionButton.OnAnimationStopEndListener() {
+                                    @Override
+                                    public void onAnimationStopEnd() {
+                                        Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        startActivity(intent);
+                                    }
+                                });
+                            } else {
+                                transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
+                            }
                         }
-                    }
-                }, 2000);
+                    }, 2000);
+                }
+            }
+        });
+
+        gotoSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-
+    private boolean validation(String username, String password){
+        return true;
+    }
     //TODO
     private void storeUserInfo(String username, String password){
         // store username and password in the database
