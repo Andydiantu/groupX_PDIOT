@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         userExists = true;
                         passwordRecvFromDB = (String) document.getData().get("password");
-                        loginLogic(password);
+                        loginLogic(username, password);
                     } else {
                         userExists = false;
                         Toast.makeText(getApplicationContext(), "User does not exist", Toast.LENGTH_SHORT).show();
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void loginLogic(String password){
+    private void loginLogic(String username, String password){
         boolean isValid = passwordRecvFromDB.equals(password) && userExists;
         Log.d(TAG, passwordRecvFromDB);
         Log.d(TAG, String.valueOf(password));
@@ -128,6 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                             public void onAnimationStopEnd() {
                                 Intent intent = new Intent(getBaseContext(), LiveDataActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("username", username);
+                                intent.putExtras(bundle);
                                 startActivity(intent);
                             }
                         });
