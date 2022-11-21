@@ -88,6 +88,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             activities.clear();
 
             readActivityData(FORMATTER.format(date.getDate()));
+            setPieChart(pieChart);
     }
 
     @Override
@@ -150,6 +151,10 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
         l.setXEntrySpace(10f);
 
         pieChart.invalidate();
+
+        if(activities.isEmpty()){
+            Toast.makeText(getApplicationContext(),"No data today",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
