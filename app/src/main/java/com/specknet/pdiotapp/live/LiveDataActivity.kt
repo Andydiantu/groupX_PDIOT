@@ -73,6 +73,7 @@ class LiveDataActivity : AppCompatActivity() {
     val JSON = MediaType.get("application/json")
 
     private val predictionToActivity = HashMap<String, String>()
+    private val acitivityToIcon = HashMap<String, Int>()
 
 
     var respeckDataArr = arrayOf<Array<Float>>()
@@ -124,6 +125,21 @@ class LiveDataActivity : AppCompatActivity() {
         predictionToActivity.put("Sitting bent forward", "Sitting")
         predictionToActivity.put("Standing", "Standing")
         predictionToActivity.put("Walking at normal speed", "Walking")
+
+        acitivityToIcon.put("Walking", R.drawable.walking)
+        acitivityToIcon.put("Sitting", R.drawable.sitting)
+        acitivityToIcon.put("Lying down", R.drawable.sleeping)
+        acitivityToIcon.put("Desk work", R.drawable.desk)
+        acitivityToIcon.put("Stairs", R.drawable.staris)
+        acitivityToIcon.put("Movement", R.drawable.movement)
+        acitivityToIcon.put("Standing", R.drawable.standing)
+        acitivityToIcon.put("Running", R.drawable.running)
+
+
+
+
+
+
 
         /*
 
@@ -381,8 +397,6 @@ class LiveDataActivity : AppCompatActivity() {
 
             sendPostRequest(finalDataArr);
 
-
-
             Log.d(TAG,"function called")
             respeckDataArr = arrayOf<Array<Float>>()
             thingyDataArr = arrayOf<Array<Float>>()
@@ -423,15 +437,17 @@ class LiveDataActivity : AppCompatActivity() {
                 Log.d(TAG, jsonData)
                 val Jobject = JSONObject(jsonData)
                 currnet_activity = Jobject.getString("prediction")
-                pushData(currnet_activity)
+                storeActivityReading(currnet_activity)
             }
         })
 
     }
 
-    fun pushData(data: String){
+    fun storeActivityReading(data: String){
         // CODE FOR GETTING DATE
         var field = predictionToActivity.get(data)
+
+
         //var field = data;
         // CODE FOR GETTING DATE
         val c = Calendar.getInstance().time
@@ -451,7 +467,7 @@ class LiveDataActivity : AppCompatActivity() {
                 .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
         }
 
-
+        icon = acitivityToIcon.get(field)!!;
 
 
     }
@@ -489,6 +505,7 @@ class LiveDataActivity : AppCompatActivity() {
         menu_live.setOnClickListener {
             currnet_activity = "running"
             icon = R.drawable.running
+
         }
     }
 
