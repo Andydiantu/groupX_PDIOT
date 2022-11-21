@@ -94,9 +94,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             boolean selected) {
             Log.d(TAG, FORMATTER.format(date.getDate()));
             activities.clear();
-
             readActivityData(FORMATTER.format(date.getDate()));
-            setPieChart(pieChart);
     }
 
     @Override
@@ -137,6 +135,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             colors.add(getResources().getColor(R.color.pie_5));
             colors.add(getResources().getColor(R.color.pie_6));
             colors.add(getResources().getColor(R.color.pie_7));
+            colors.add(getResources().getColor(R.color.pie_8));
             dataSet.setColors(colors);
 
             String centerText = "Total time\n" + totalTime + "s";
@@ -163,9 +162,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             l.setXEntrySpace(10f);
 
             pieChart.invalidate();
-        }
-
-        if(activities.isEmpty()){
+        }else{
+            pieChart.setData(null);
+            pieChart.invalidate();
             Toast.makeText(getApplicationContext(),"No data today",Toast.LENGTH_SHORT).show();
         }
 
@@ -193,6 +192,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
                         setPieChart(pieChart);
                     } else {
                         Log.d(TAG, "No such document");
+                        setPieChart(pieChart);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
