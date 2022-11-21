@@ -38,6 +38,7 @@ import java.util.*
 
 class LiveDataActivity : AppCompatActivity() {
     private val TAG = this.javaClass.name
+    lateinit var username: String
 
     // global graph variables
     lateinit var dataSet_res_accel_x: LineDataSet
@@ -81,8 +82,6 @@ class LiveDataActivity : AppCompatActivity() {
     var respeckDataArr = arrayOf<Array<Float>>()
     var thingyDataArr = arrayOf<Array<Float>>()
 
-    private val username = "farSightJay"
-
 
 //    private var myService: ActivityIdentifyService.ActivityIdentifyBinder? = null
 //    private var mIsBound = false
@@ -100,11 +99,17 @@ class LiveDataActivity : AppCompatActivity() {
 //    }
 
     var currnet_activity = "N/A"
-    var icon = R.drawable.lying
+    var icon = R.drawable.health_pic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live_data)
+
+        val bundle = this.intent.extras
+        val str = bundle!!.getString("username")
+        if (str != null) {
+           username = str
+        }
 
         setupCharts()
 
@@ -450,8 +455,6 @@ class LiveDataActivity : AppCompatActivity() {
     fun storeActivityReading(data: String){
         // CODE FOR GETTING DATE
         var field = predictionToActivity.get(data)
-
-
         //var field = data;
         // CODE FOR GETTING DATE
         val c = Calendar.getInstance().time
@@ -533,7 +536,7 @@ class LiveDataActivity : AppCompatActivity() {
 
 
 
-        fun setupClickListeners() {
+    fun setupClickListeners() {
         menu_live=findViewById(R.id.live_live_button)
         menu_history=findViewById(R.id.live_history_button)
         menu_record=findViewById(R.id.live_record_button)
@@ -546,23 +549,29 @@ class LiveDataActivity : AppCompatActivity() {
 
         menu_connect.setOnClickListener {
             val intent = Intent(this, ConnectingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         menu_record.setOnClickListener {
             val intent = Intent(this, RecordingActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
+            this.overridePendingTransition(0, 0)
         }
 
         menu_history.setOnClickListener {
             val intent = Intent(this, resultAnalysis::class.java)
+            val bundle = Bundle()
+            bundle.putString("username",username)
+            intent.putExtras(bundle)
             startActivity(intent)
-        }
-
-        menu_live.setOnClickListener {
-            currnet_activity = "running"
-            icon = R.drawable.running
-
+            this.overridePendingTransition(0, 0)
         }
     }
 

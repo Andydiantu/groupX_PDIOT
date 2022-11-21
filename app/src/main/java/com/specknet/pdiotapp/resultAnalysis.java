@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -51,12 +52,17 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
     private DocumentSnapshot data ;
 
-    private String username = "farSightJay";
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_analysis);
+
+        Bundle bundle = this.getIntent().getExtras();
+        String str = bundle.getString("username");
+        if(str!=null)
+            username = str;
 
         calendarView = findViewById(R.id.calendar_view);
         calendarView.setOnDateChangedListener(this);
@@ -90,6 +96,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             activities.clear();
 
             readActivityData(FORMATTER.format(date.getDate()));
+            setPieChart(pieChart);
     }
 
     @Override
@@ -146,6 +153,8 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
             pieChart.setData(pieData);
 
+
+            pieChart.animateY(1400, Easing.EaseInOutQuad);
             Legend l = pieChart.getLegend();
             l.setFormSize(10f);
             l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
@@ -154,6 +163,10 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             l.setXEntrySpace(10f);
 
             pieChart.invalidate();
+        }
+
+        if(activities.isEmpty()){
+            Toast.makeText(getApplicationContext(),"No data today",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -206,21 +219,33 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, ConnectingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
         history_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, LiveDataActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
         history_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultAnalysis.this, RecordingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                intent.putExtras(bundle);
                 startActivity(intent);
+                resultAnalysis.this.overridePendingTransition(0, 0);
             }
         });
     }
