@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -143,6 +144,7 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
 
         pieChart.setData(pieData);
 
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
         Legend l = pieChart.getLegend();
         l.setFormSize(10f);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);

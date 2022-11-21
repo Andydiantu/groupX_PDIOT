@@ -95,7 +95,7 @@ class LiveDataActivity : AppCompatActivity() {
 //    }
 
     var currnet_activity = "N/A"
-    var icon = R.drawable.lying
+    var icon = R.drawable.health_pic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
