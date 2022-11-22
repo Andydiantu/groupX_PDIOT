@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -134,8 +136,6 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
-                    } else {
-                        transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.SHAKE, null);
                     }
                 }
             }, 2000);
@@ -219,4 +219,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+    }
+
 }
