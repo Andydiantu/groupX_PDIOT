@@ -16,8 +16,12 @@ import android.text.InputFilter
 import android.text.InputFilter.AllCaps
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import com.specknet.pdiotapp.R
 import com.specknet.pdiotapp.RecordingActivity
 import com.specknet.pdiotapp.barcode.BarcodeActivity
@@ -80,11 +84,43 @@ class ConnectingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connecting)
 
-        val bundle = this.intent.extras
-        val str = bundle!!.getString("username")
-        if (str != null) {
-            username = str
+//        val bundle = this.intent.extras
+//        val str = bundle!!.getString("username")
+//        if (str != null) {
+//            username = str
+//        }
+
+        val respeck_fab: View = findViewById(R.id.respeck_fab)
+        respeck_fab.setOnClickListener { view ->
+            val snack = Snackbar.make(view,
+                "If your phone supports NFC, tap it against the white surface of the Respeck to obtain the ID. You can also find the ID on the Respeck label, or scan the Respeck QR code by pressing the Scan QR button.",
+                Snackbar.LENGTH_LONG)
+            snack.setMaxInlineActionWidth(3)
+            val view: View = snack.getView()
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.CENTER
+            params.height = 200
+            view.layoutParams = params
+            snack.show()
+
         }
+
+        val thingy_fab: View = findViewById(R.id.thingy_fab)
+        thingy_fab.setOnClickListener { view ->
+            val snack = Snackbar.make(view,
+                "If your phone supports NFC, tap it against the top of the Thingy to obtain the ID. The Thingy ID is also written on a label under the black rubber case.",
+                Snackbar.LENGTH_LONG)
+            snack.setMaxInlineActionWidth(3)
+            val view: View = snack.getView()
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.CENTER
+            params.height = 200
+            view.layoutParams = params
+            snack.show()
+
+        }
+
+
 
         // scan respeck
         scanRespeckButton = findViewById(R.id.scan_respeck)
