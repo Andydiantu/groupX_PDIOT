@@ -122,7 +122,9 @@ public class resultAnalysis extends AppCompatActivity implements OnDateSelectedL
             for (Map.Entry<String, Object> entry : activities.entrySet()) {
                 //            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                 float time = 100 * ((Long) entry.getValue()).intValue() / totalTime;
-                strings.add(new PieEntry(time, entry.getKey()));
+                if (time > 0) {
+                    strings.add(new PieEntry(time, entry.getKey()));
+                }
             }
 
             PieDataSet dataSet = new PieDataSet(strings, "");
