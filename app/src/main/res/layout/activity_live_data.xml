@@ -7,6 +7,14 @@
     tools:context=".live.LiveDataActivity">
 
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/live_menu"
+        app:layout_constraintHeight_max="800dp"
+        app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,6 +105,11 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    </ScrollView>
+
+
 
     <LinearLayout
         android:id="@+id/live_menu"
