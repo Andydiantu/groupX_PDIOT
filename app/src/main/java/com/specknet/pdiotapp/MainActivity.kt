@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
         permissionAlertDialog = AlertDialog.Builder(this)
 
-        setupClickListeners()
+//        setupClickListeners()
 
         setupPermissions()
 
@@ -82,27 +82,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setupClickListeners() {
-        liveProcessingButton.setOnClickListener {
-            val intent = Intent(this, LiveDataActivity::class.java)
-            startActivity(intent)
-        }
-
-        pairingButton.setOnClickListener {
-            val intent = Intent(this, ConnectingActivity::class.java)
-            startActivity(intent)
-        }
-
-        recordButton.setOnClickListener {
-            val intent = Intent(this, RecordingActivity::class.java)
-            startActivity(intent)
-        }
-
-        resultButton.setOnClickListener {
-            val intent = Intent(this, resultAnalysis::class.java)
-            startActivity(intent)
-        }
-    }
+//    fun setupClickListeners() {
+//        liveProcessingButton.setOnClickListener {
+//            val intent = Intent(this, LiveDataActivity::class.java)
+//            startActivity(intent)
+//        }
+//
+//        pairingButton.setOnClickListener {
+//            val intent = Intent(this, ConnectingActivity::class.java)
+//            startActivity(intent)
+//        }
+//
+//        recordButton.setOnClickListener {
+//            val intent = Intent(this, RecordingActivity::class.java)
+//            startActivity(intent)
+//        }
+//
+//        resultButton.setOnClickListener {
+//            val intent = Intent(this, resultAnalysis::class.java)
+//            startActivity(intent)
+//        }
+//    }
 
     fun setupPermissions() {
         // request permissions
@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == Constants.REQUEST_CODE_PERMISSIONS) {
             if(grantResults.isNotEmpty()) {
                 for (i in grantResults.indices) {
