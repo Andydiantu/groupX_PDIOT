@@ -85,57 +85,13 @@ class ConnectingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connecting)
 
-//        val bundle = this.intent.extras
-//        val str = bundle!!.getString("username")
-//        if (str != null) {
-//            username = str
-//        }
-
-        val respeck_fab: View = findViewById(R.id.respeck_fab)
-        respeck_fab.setOnClickListener { view ->
-            val snack = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
-            snack.setMaxInlineActionWidth(3)
-            val view: View = snack.getView()
-            val snackbarLayout = view as SnackbarLayout
-            val add_view: View =
-                LayoutInflater.from(view.getContext()).inflate(R.layout.snackbar_respeck, null)
-            val p = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            p.gravity = Gravity.CENTER
-            snackbarLayout.addView(add_view, 0, p)
-
-            val params = view.layoutParams as FrameLayout.LayoutParams
-            params.gravity = Gravity.CENTER
-            params.height = 380
-            view.layoutParams = params
-            snack.show()
+        val bundle = this.intent.extras
+        val str = bundle!!.getString("username")
+        if (str != null) {
+            username = str
         }
 
-        val thingy_fab: View = findViewById(R.id.thingy_fab)
-        thingy_fab.setOnClickListener { view ->
-            val snack = Snackbar.make(view, "",Snackbar.LENGTH_LONG)
-            snack.setMaxInlineActionWidth(3)
-            val view: View = snack.getView()
-            val snackbarLayout = view as SnackbarLayout
-            val add_view: View =
-                LayoutInflater.from(view.getContext()).inflate(R.layout.snackbar_thingy, null)
-            val p = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            p.gravity = Gravity.CENTER
-            snackbarLayout.addView(add_view, 0, p)
-
-            val params = view.layoutParams as FrameLayout.LayoutParams
-            params.gravity = Gravity.CENTER
-            params.height = 340
-            view.layoutParams = params
-            snack.show()
-        }
-
-
+        setUpSnackBars()
 
         // scan respeck
         scanRespeckButton = findViewById(R.id.scan_respeck)
@@ -177,7 +133,6 @@ class ConnectingActivity : AppCompatActivity() {
             stopConnectCloud()
             startConnectCloud()
         }
-
 
         // first read shared preferences to see if there was a respeck there already
         sharedPreferences = getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE)
@@ -522,6 +477,52 @@ class ConnectingActivity : AppCompatActivity() {
             intent.putExtras(bundle)
             startActivity(intent)
             this.overridePendingTransition(0, 0)
+        }
+    }
+
+    fun setUpSnackBars(){
+        val respeck_fab: View = findViewById(R.id.respeck_fab)
+        respeck_fab.setOnClickListener { view ->
+            val snack = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
+            snack.setMaxInlineActionWidth(3)
+            val view: View = snack.getView()
+            val snackbarLayout = view as SnackbarLayout
+            val add_view: View =
+                LayoutInflater.from(view.getContext()).inflate(R.layout.snackbar_respeck, null)
+            val p = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            p.gravity = Gravity.CENTER
+            snackbarLayout.addView(add_view, 0, p)
+
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.CENTER
+            params.height = 380
+            view.layoutParams = params
+            snack.show()
+        }
+
+        val thingy_fab: View = findViewById(R.id.thingy_fab)
+        thingy_fab.setOnClickListener { view ->
+            val snack = Snackbar.make(view, "",Snackbar.LENGTH_LONG)
+            snack.setMaxInlineActionWidth(3)
+            val view: View = snack.getView()
+            val snackbarLayout = view as SnackbarLayout
+            val add_view: View =
+                LayoutInflater.from(view.getContext()).inflate(R.layout.snackbar_thingy, null)
+            val p = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            p.gravity = Gravity.CENTER
+            snackbarLayout.addView(add_view, 0, p)
+
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.CENTER
+            params.height = 340
+            view.layoutParams = params
+            snack.show()
         }
     }
 
